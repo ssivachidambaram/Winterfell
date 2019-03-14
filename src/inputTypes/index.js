@@ -6,6 +6,7 @@ var inputTypes = {
   emailInput           : require('./emailInput'),
   fileInput            : require('./fileInput'),
   hiddenInput          : require('./hiddenInput'),
+  numberInput          : require('./numberInput'),
   passwordInput        : require('./passwordInput'),
   radioOptionsInput    : require('./radioOptionsInput'),
   selectInput          : require('./selectInput'),
