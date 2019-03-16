@@ -49,7 +49,6 @@ var QuestionSet = (function (_React$Component) {
             isError = 1;
           }
           if (!isError) {
-            console.log("isError", isError);
             mappingConditionalItems.push(React.createElement(Question, { key: question.questionId,
               questionSetId: _this.props.id,
               questionContainerClass: question.questionContainerClass,

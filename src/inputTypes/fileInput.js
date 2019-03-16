@@ -37,9 +37,15 @@ class FileInput extends React.Component {
       },
       onUploadProgress: this.progressEvent.bind(this)
     };
-    Object.assign(files[0], {
-      preview: URL.createObjectURL(files[0])
-    });
+    if (files[0].type.indexOf('image/') !== -1) {
+      Object.assign(files[0], {
+        preview: URL.createObjectURL(files[0])
+      });
+    } else {
+      Object.assign(files[0], {
+        filename: files[0].name
+      });
+    }
     this.setState(
       {
         value: files[0]
@@ -109,11 +115,14 @@ class FileInput extends React.Component {
     }
     return (
       <section>
-        {this.state.value.preview && (
+        {this.state.value && this.state.value.preview && (
           <img src={this.state.value.preview} style={img} />
         )}
+        {this.state.value && this.state.value.filename && (
+          <p>{this.state.value.filename}</p>
+        )}
         <Dropzone
-          accept="image/*"
+          accept={this.props.text}
           multiple={false}
           name={this.props.name}
           onDrop={this.onDrop.bind(this)}
@@ -130,7 +139,6 @@ class FileInput extends React.Component {
             let styles = { ...baseStyle };
             styles = isDragActive ? { ...styles, ...activeStyle } : styles;
             styles = isDragReject ? { ...styles, ...rejectStyle } : styles;
-
             return (
               <div {...getRootProps()} style={styles}>
                 <input

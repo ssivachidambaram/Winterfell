@@ -37,7 +37,6 @@ class QuestionSet extends React.Component {
           isError = 1;
         }
         if (!isError) {
-          console.log("isError", isError);
           mappingConditionalItems.push(
             <Question key={question.questionId}
                       questionSetId={this.props.id}

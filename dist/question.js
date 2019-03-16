@@ -64,13 +64,11 @@ var Question = (function (_React$Component) {
         }).forEach(function (option) {
           return [].forEach.bind(option.conditionalQuestions, function (conditionalQuestion) {
             if (conditionalQuestion.questionSetId !== 'undefined') {
-              // Todolist: .return.return.return
               var QuestionSet;
-              //QuestionSet = this._reactInternalFiber._debugOwner.elementType;
               if (_this._reactInternalFiber._debugOwner !== undefined) {
-                console.log(_this._reactInternalFiber);
                 QuestionSet = _this._reactInternalFiber._debugOwner.elementType;
               } else {
+                // @Todo need to change as dynamic .return.return.return
                 QuestionSet = _this._reactInternalFiber['return']['return']['return'].elementType;
               }
               conditionalItems.push(React.createElement(QuestionSet, { key: conditionalQuestion.questionSetId,

@@ -57,9 +57,15 @@ var FileInput = (function (_React$Component) {
         },
         onUploadProgress: this.progressEvent.bind(this)
       };
-      Object.assign(files[0], {
-        preview: URL.createObjectURL(files[0])
-      });
+      if (files[0].type.indexOf('image/') !== -1) {
+        Object.assign(files[0], {
+          preview: URL.createObjectURL(files[0])
+        });
+      } else {
+        Object.assign(files[0], {
+          filename: files[0].name
+        });
+      }
       this.setState({
         value: files[0]
       }, this.props.onChange.bind(null, files[0], progress));
@@ -138,11 +144,16 @@ var FileInput = (function (_React$Component) {
       return React.createElement(
         'section',
         null,
-        this.state.value.preview && React.createElement('img', { src: this.state.value.preview, style: img }),
+        this.state.value && this.state.value.preview && React.createElement('img', { src: this.state.value.preview, style: img }),
+        this.state.value && this.state.value.filename && React.createElement(
+          'p',
+          null,
+          this.state.value.filename
+        ),
         React.createElement(
           _reactDropzone2['default'],
           {
-            accept: 'image/*',
+            accept: this.props.text,
             multiple: false,
             name: this.props.name,
             onDrop: this.onDrop.bind(this),
@@ -159,7 +170,6 @@ var FileInput = (function (_React$Component) {
             var styles = _extends({}, baseStyle);
             styles = isDragActive ? _extends({}, styles, activeStyle) : styles;
             styles = isDragReject ? _extends({}, styles, rejectStyle) : styles;
-
             return React.createElement(
               'div',
               _extends({}, getRootProps(), { style: styles }),
