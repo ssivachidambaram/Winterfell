@@ -37,21 +37,23 @@ class FileInput extends React.Component {
       },
       onUploadProgress: this.progressEvent.bind(this)
     };
-    if (files[0].type.indexOf('image/') !== -1) {
-      Object.assign(files[0], {
-        preview: URL.createObjectURL(files[0])
-      });
-    } else {
-      Object.assign(files[0], {
-        filename: files[0].name
-      });
+    if (files.length > 0) {
+      if (files[0].type.indexOf('image/') !== -1) {
+        Object.assign(files[0], {
+          preview: URL.createObjectURL(files[0])
+        });
+      } else {
+        Object.assign(files[0], {
+          filename: files[0].name
+        });
+      }
+      this.setState(
+        {
+          value: files[0]
+        },
+        this.props.onChange.bind(null, files[0], progress)
+      );
     }
-    this.setState(
-      {
-        value: files[0]
-      },
-      this.props.onChange.bind(null, files[0], progress)
-    );
   }
 
   render() {
@@ -113,6 +115,14 @@ class FileInput extends React.Component {
     if (this.state.progress === 100) {
       message = <span>Successfully uploaded</span>;
     }
+    let oldFile = false ;
+    let imageFile = false;
+    if(this.state.value && !this.state.value.preview && !this.state.value.filename){
+      oldFile = true;
+      if(this.state.value.indexOf('.jpg') > -1 || this.state.value.indexOf('.jpeg') > -1 || this.state.value.indexOf('.png') > -1 || this.state.value.indexOf('.gif') > -1){
+        imageFile = true;
+      }
+    }
     return (
       <section>
         {this.state.value && this.state.value.preview && (
@@ -120,6 +130,12 @@ class FileInput extends React.Component {
         )}
         {this.state.value && this.state.value.filename && (
           <p>{this.state.value.filename}</p>
+        )}
+        {oldFile && imageFile && (
+          <img src={`/img/100x100,sc/${this.state.value}`} style={img} />
+        )}
+        {oldFile && !imageFile && (
+           <p>{this.state.value}</p>
         )}
         <Dropzone
           accept={this.props.text}

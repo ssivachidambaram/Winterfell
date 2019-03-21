@@ -57,18 +57,20 @@ var FileInput = (function (_React$Component) {
         },
         onUploadProgress: this.progressEvent.bind(this)
       };
-      if (files[0].type.indexOf('image/') !== -1) {
-        Object.assign(files[0], {
-          preview: URL.createObjectURL(files[0])
-        });
-      } else {
-        Object.assign(files[0], {
-          filename: files[0].name
-        });
+      if (files.length > 0) {
+        if (files[0].type.indexOf('image/') !== -1) {
+          Object.assign(files[0], {
+            preview: URL.createObjectURL(files[0])
+          });
+        } else {
+          Object.assign(files[0], {
+            filename: files[0].name
+          });
+        }
+        this.setState({
+          value: files[0]
+        }, this.props.onChange.bind(null, files[0], progress));
       }
-      this.setState({
-        value: files[0]
-      }, this.props.onChange.bind(null, files[0], progress));
     }
   }, {
     key: 'render',
@@ -141,6 +143,14 @@ var FileInput = (function (_React$Component) {
           'Successfully uploaded'
         );
       }
+      var oldFile = false;
+      var imageFile = false;
+      if (this.state.value && !this.state.value.preview && !this.state.value.filename) {
+        oldFile = true;
+        if (this.state.value.indexOf('.jpg') > -1 || this.state.value.indexOf('.jpeg') > -1 || this.state.value.indexOf('.png') > -1 || this.state.value.indexOf('.gif') > -1) {
+          imageFile = true;
+        }
+      }
       return React.createElement(
         'section',
         null,
@@ -149,6 +159,12 @@ var FileInput = (function (_React$Component) {
           'p',
           null,
           this.state.value.filename
+        ),
+        oldFile && imageFile && React.createElement('img', { src: '/img/100x100,sc/' + this.state.value, style: img }),
+        oldFile && !imageFile && React.createElement(
+          'p',
+          null,
+          this.state.value
         ),
         React.createElement(
           _reactDropzone2['default'],
