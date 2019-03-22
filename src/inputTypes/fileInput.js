@@ -135,7 +135,7 @@ class FileInput extends React.Component {
           <img src={`/img/100x100,sc/${this.state.value}`} style={img} />
         )}
         {oldFile && !imageFile && (
-           <p>{this.state.value}</p>
+           <p><a href={`/private_media/${this.state.value}`} target="_blank">{this.state.value} </a></p>
         )}
         <Dropzone
           accept={this.props.text}

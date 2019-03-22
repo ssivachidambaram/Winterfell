@@ -164,7 +164,12 @@ var FileInput = (function (_React$Component) {
         oldFile && !imageFile && React.createElement(
           'p',
           null,
-          this.state.value
+          React.createElement(
+            'a',
+            { href: '/private_media/' + this.state.value, target: '_blank' },
+            this.state.value,
+            ' '
+          )
         ),
         React.createElement(
           _reactDropzone2['default'],
