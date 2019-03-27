@@ -122,7 +122,7 @@ var FileInput = (function (_React$Component) {
       var progressWrapper = {
         height: '10px',
         marginTop: '10px',
-        width: '400px',
+        width: '100%',
         float: 'left',
         overflow: 'hidden',
         backgroundColor: '#f5f5f5',
