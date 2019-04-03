@@ -35,8 +35,10 @@
     "babelify": "^6.3.0",
     "keycodez": "^1.0.0",
     "lodash": "^3.10.1",
+    "react-datepicker": "^2.3.0",
     "react-dom": "^16.6.3",
     "react-dropzone": "^8.0.3",
+    "resolve-url-loader": "^3.0.1",
     "validator": "^4.0.5"
   },
   "devDependencies": {
@@ -44,9 +46,11 @@
     "babel-core": "^5.8.23",
     "babel-loader": "^5.3.2",
     "browserify": "^11.0.1",
+    "css-loader": "^2.1.1",
     "gulp": "^3.9.0",
     "gulp-uglify": "^1.2.0",
     "rimraf": "^2.4.3",
+    "style-loader": "^0.23.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.12.1"

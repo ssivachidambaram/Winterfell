@@ -7,11 +7,19 @@ module.exports = {
     javascript : './index.js'
   },
   module    : {
-    loaders : [{
-      test    : /\.js$/,
-      exclude : /node_modules/,
-      loaders : ['babel-loader'],
-    }],
+    loaders : [
+      {
+        test: /\.css$/,
+        loaders: [
+          'style-loader', 'css-loader', 'resolve-url-loader'
+        ],
+      },      
+      {
+        test    : /\.js$/,
+        exclude : /node_modules/,
+        loaders : ['babel-loader'],
+      }
+    ],
   },
   externals : {
     'react'        : 'React',

@@ -1,4 +1,6 @@
 var React = require('react');
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 
 class DateInput extends React.Component {
 
@@ -10,27 +12,19 @@ class DateInput extends React.Component {
     };
   }
 
-  handleChange(e) {
+  handleChange(date) {
     this.setState({
-      value : e.target.value
-    }, this.props.onChange.bind(null, e.target.value));
+      value : date
+    }, this.props.onChange.bind(null, date));
   }
 
   render() {
     return (
-      <input type="date"
-             name={this.props.name}
-             id={this.props.id}
-             aria-labelledby={this.props.labelId}
-             className={this.props.classes.input}
-             placeholder={this.props.placeholder}
-             value={this.state.value}
-             required={this.props.required
-                         ? 'required'
-                         : undefined}
-             onChange={this.handleChange.bind(this)}
-             onBlur={this.props.onBlur.bind(null, this.state.value)}
-             onKeyDown={this.props.onKeyDown} />
+      <DatePicker
+        selected={this.state.value}
+        onChange={this.handleChange.bind(this)}
+        className={this.props.classes.input}
+      />
     );
   }
 
