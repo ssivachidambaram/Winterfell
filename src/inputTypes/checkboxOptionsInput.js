@@ -31,7 +31,7 @@ class CheckboxOptionsInput extends React.Component {
 
   render() {
     return (
-      <ul className={this.props.classes.checkboxList}>
+      <ul className={this.props.classes.checkboxList} id={this.props.name}>
         {this.props.options.map((opt,index) =>
           <li key={opt.value}
               className={this.props.classes.checkboxListItem}>

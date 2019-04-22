@@ -8,11 +8,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _fortawesomeFontawesomeSvgCore = require('@fortawesome/fontawesome-svg-core');
+
+var _fortawesomeFreeSolidSvgIcons = require('@fortawesome/free-solid-svg-icons');
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var _ = require('lodash').noConflict();
 
 var QuestionPanel = require('./questionPanel');
+
+_fortawesomeFontawesomeSvgCore.library.add(_fortawesomeFreeSolidSvgIcons.faPaperclip, _fortawesomeFreeSolidSvgIcons.faComment);
 
 var Winterfell = (function (_React$Component) {
   _inherits(Winterfell, _React$Component);

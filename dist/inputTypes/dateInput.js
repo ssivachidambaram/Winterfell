@@ -41,11 +41,15 @@ var DateInput = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return React.createElement(_reactDatepicker2['default'], {
-        selected: this.state.value,
-        onChange: this.handleChange.bind(this),
-        className: this.props.classes.input
-      });
+      return React.createElement(
+        'div',
+        { id: this.props.name },
+        React.createElement(_reactDatepicker2['default'], {
+          selected: this.state.value,
+          onChange: this.handleChange.bind(this),
+          className: this.props.classes.input
+        })
+      );
     }
   }]);
 

@@ -41,7 +41,7 @@ class CheckboxInput extends React.Component {
                  className={this.props.classes.checkbox}
                  defaultChecked={this.state.checked}
                  value={this.props.value}
-                 id={this.props.labelId}
+                 id={this.props.name}
                  required={this.props.required
                              ? 'required'
                              : undefined}
@@ -50,7 +50,7 @@ class CheckboxInput extends React.Component {
                                                         ? this.props.value
                                                         : undefined))} />      
         <label className={this.props.classes.checkboxLabel}
-               id={this.props.labelId} for={this.props.labelId}>
+               id={this.props.labelId} for={this.props.name}>
 
           {this.props.text}
         </label>

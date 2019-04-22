@@ -57,14 +57,14 @@ var CheckboxInput = (function (_React$Component) {
           className: this.props.classes.checkbox,
           defaultChecked: this.state.checked,
           value: this.props.value,
-          id: this.props.labelId,
+          id: this.props.name,
           required: this.props.required ? 'required' : undefined,
           onChange: this.handleChange.bind(this),
           onBlur: this.props.onBlur.bind(null, this.state.checked ? this.props.value : undefined) }),
         React.createElement(
           'label',
           { className: this.props.classes.checkboxLabel,
-            id: this.props.labelId, 'for': this.props.labelId },
+            id: this.props.labelId, 'for': this.props.name },
           this.props.text
         )
       );

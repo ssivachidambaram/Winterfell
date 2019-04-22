@@ -2,8 +2,17 @@ var React = require('react');
 var _     = require('lodash').noConflict();
 
 var InputTypes = require('./inputTypes');
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Question extends React.Component {
+
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      displayConfirmation : this.props.displayConfirmation,
+    };
+  }  
 
   handleInputChange(questionId, value, progress) {
     this.props.onAnswerChange(
@@ -23,6 +32,12 @@ class Question extends React.Component {
       this.props.validateOn
     );
   }
+
+  displayChange() {
+    var display = this.state.displayConfirmation;
+    display.isNeed = !display.isNeed;
+    this.setState({displayConfirmation: display});
+  }  
 
   render() {
     var Input = InputTypes[this.props.input.type];
@@ -95,6 +110,7 @@ class Question extends React.Component {
                             validations={conditionalQuestion.validations}
                             value={this.props.questionAnswers[conditionalQuestion.questionId]}
                             input={conditionalQuestion.input}
+                            displayConfirmation={conditionalQuestion.displayConfirmation}
                             classes={this.props.classes}
                             renderError={this.props.renderError}
                             questionAnswers={this.props.questionAnswers}
@@ -171,9 +187,21 @@ class Question extends React.Component {
       typeof this.props.input.default !== 'undefined' &&
       this.props.input.default === this.props.value
     ) ? true : false;
-
+    
     return (
       <div className={this.props.classes.question + this.props.questionContainerClass + validationInputErrors}>
+        {this.state.displayConfirmation.isNeed && !this.state.displayConfirmation.icon && (
+          <React.Fragment>
+          <button onClick={this.displayChange.bind(this)}>{this.state.displayConfirmation.text}</button>
+          </React.Fragment>
+        )}
+        {this.state.displayConfirmation.isNeed && this.state.displayConfirmation.icon && (
+          <React.Fragment>
+          <a onClick={this.displayChange.bind(this)}> <FontAwesomeIcon icon={this.state.displayConfirmation.icon} className="fa-fw text-24" /> </a>
+          </React.Fragment>
+        )}
+        {!this.state.displayConfirmation.isNeed && (
+          <React.Fragment>
         {!!this.props.question
           ? (
               <label className={this.props.classes.label}
@@ -225,6 +253,8 @@ class Question extends React.Component {
             )
           : undefined}
         {conditionalItems}
+        </React.Fragment>
+        )}
       </div>
     );
   }
@@ -269,7 +299,12 @@ Question.defaultProps = {
   onQuestionBlur         : () => {},
   onKeyDown              : () => {},
   renderError            : undefined,
-  renderRequiredAsterisk : undefined
+  renderRequiredAsterisk : undefined,
+  displayConfirmation:{
+    text: '',
+    icon: false,
+    isNeed: false
+  }
 };
 
 module.exports = Question;

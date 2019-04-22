@@ -18,7 +18,7 @@ class RadioOptionsInput extends React.Component {
 
   render() {
     return (
-      <ul className={this.props.classes.radioList}>
+      <ul className={this.props.classes.radioList} id={this.props.name}>
         {this.props.options.map((opt,ind) =>
           <li key={opt.value}
               className={this.props.classes.radioListItem}>

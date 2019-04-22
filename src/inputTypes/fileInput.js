@@ -1,12 +1,16 @@
 var React = require('react');
 import Dropzone from 'react-dropzone';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class FileInput extends React.Component {
   constructor(props) {
     super(props);
-
+    var value = this.props.value;
+    if(this.props.options[0].multiple && value === ''){
+      value = [];
+    } 
     this.state = {
-      value: this.props.value,
+      value: value,
+      multiple: this.props.options[0].multiple,
       progress: 0
     };
   }
@@ -19,6 +23,21 @@ class FileInput extends React.Component {
       this.props.onChange.bind(null, file, progress)
     );
   }
+
+  handleDelete(index) {
+    var temp = this.state.value;
+    if(this.state.multiple){
+      temp = '';
+    }else{
+      temp.splice(index, 1);
+    }
+    this.setState(
+      {
+        value: temp
+      },
+      this.props.onChange.bind(null, temp)
+    );
+  }  
 
   progressEvent(progressEvent) {
     const percentCompleted = Math.round(
@@ -38,21 +57,43 @@ class FileInput extends React.Component {
       onUploadProgress: this.progressEvent.bind(this)
     };
     if (files.length > 0) {
-      if (files[0].type.indexOf('image/') !== -1) {
-        Object.assign(files[0], {
-          preview: URL.createObjectURL(files[0])
+      if(!this.state.multiple){
+        if (files[0].type.indexOf('image/') !== -1) {
+          Object.assign(files[0], {
+            preview: URL.createObjectURL(files[0])
+          });
+        } else {
+          Object.assign(files[0], {
+            filename: files[0].name
+          });
+        }
+        this.setState(
+          {
+            value: files[0]
+          },
+          this.props.onChange.bind(null, files[0], progress)
+        );
+      }else if(this.state.multiple){
+        var temp = this.state.value;
+        files.forEach((option, index) => {
+          if (files[index].type.indexOf('image/') !== -1) {
+            Object.assign(files[index], {
+              preview: URL.createObjectURL(files[index])
+            });
+          } else {
+            Object.assign(files[index], {
+              filename: files[index].name
+            });
+          } 
+          temp.push(files[index]);         
         });
-      } else {
-        Object.assign(files[0], {
-          filename: files[0].name
-        });
+        this.setState(
+          {
+            value: temp
+          },
+          this.props.onChange.bind(null, temp  , progress)
+        );
       }
-      this.setState(
-        {
-          value: files[0]
-        },
-        this.props.onChange.bind(null, files[0], progress)
-      );
     }
   }
 
@@ -117,29 +158,72 @@ class FileInput extends React.Component {
     }
     let oldFile = false ;
     let imageFile = false;
-    if(this.state.value && !this.state.value.preview && !this.state.value.filename){
+    let files = [];
+    let panels = '';
+    if(this.state.value && !this.state.value.preview && !this.state.value.filename && !this.state.multiple){
       oldFile = true;
       if(this.state.value.indexOf('.jpg') > -1 || this.state.value.indexOf('.jpeg') > -1 || this.state.value.indexOf('.png') > -1 || this.state.value.indexOf('.gif') > -1){
         imageFile = true;
       }
+      panels = '';
+      }
+    if(this.state.multiple){
+      panels = this.state.value.map((files, keys) => {
+        let oldFile = false ;
+        let imageFile = false;
+        if(files && !files.preview && !files.filename){
+          oldFile = true;
+          if(files && !files.preview && !files.filename && (files.indexOf('.jpg') > -1 || files.indexOf('.jpeg') > -1 || files.indexOf('.png') > -1 || files.indexOf('.gif') > -1) ){
+            imageFile = true;
+          }
+        }     
+        return (
+          <React.Fragment>
+            {files && files.preview && (
+              <React.Fragment>
+              <img src={files.preview} style={img}  />
+              <a onClick={this.handleDelete(keys)}> <FontAwesomeIcon icon="comment" className="fa-fw" /> </a>
+              </React.Fragment>
+            )}
+            {files && files.filename && (
+              <p>{files.filename}</p>
+            )}
+            {oldFile && imageFile && (
+              <img src={`/img/100x100,sc/${files}`} style={img} />
+            )}
+            {oldFile && !imageFile && (
+              <p><a href={`/private_media/${files}`} target="_blank">{files} </a></p>
+            )}
+          </React.Fragment>
+        );
+      });
     }
     return (
       <section>
-        {this.state.value && this.state.value.preview && (
-          <img src={this.state.value.preview} style={img} />
+        {!this.state.multiple && (          
+          <React.Fragment>
+          {this.state.value && this.state.value.preview && (
+            <img src={this.state.value.preview} style={img} />
+          )}
+          {this.state.value && this.state.value.filename && (
+            <p>{this.state.value.filename}</p>
+          )}
+          {oldFile && imageFile && (
+            <img src={`/img/100x100,sc/${this.state.value}`} style={img} />
+          )}
+          {oldFile && !imageFile && (
+            <p><a href={`/private_media/${this.state.value}`} target="_blank">{this.state.value} </a></p>
+          )} 
+          </React.Fragment>
         )}
-        {this.state.value && this.state.value.filename && (
-          <p>{this.state.value.filename}</p>
-        )}
-        {oldFile && imageFile && (
-          <img src={`/img/100x100,sc/${this.state.value}`} style={img} />
-        )}
-        {oldFile && !imageFile && (
-           <p><a href={`/private_media/${this.state.value}`} target="_blank">{this.state.value} </a></p>
+        {this.state.multiple && ( 
+          <React.Fragment>
+          {panels}
+          </React.Fragment>
         )}
         <Dropzone
           accept={this.props.text}
-          multiple={false}
+          multiple={this.state.multiple}
           name={this.props.name}
           onDrop={this.onDrop.bind(this)}
           onChange={this.handleChange.bind(this)}
@@ -191,6 +275,9 @@ FileInput.defaultProps = {
   name: '',
   id: '',
   value: '',
+  options: [
+    {'multiple': false}
+  ],
   onChange: () => {},
   onBlur: () => {}
 };

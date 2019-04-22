@@ -3,6 +3,15 @@ var ReactDOM = require('react-dom');
 var _        = require('lodash').noConflict();
 
 var QuestionPanel = require('./questionPanel');
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faPaperclip,
+  faComment
+} from '@fortawesome/free-solid-svg-icons';
+library.add(
+  faPaperclip,
+  faComment,
+);
 
 class Winterfell extends React.Component {
 

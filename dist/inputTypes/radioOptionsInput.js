@@ -37,7 +37,7 @@ var RadioOptionsInput = (function (_React$Component) {
 
       return React.createElement(
         'ul',
-        { className: this.props.classes.radioList },
+        { className: this.props.classes.radioList, id: this.props.name },
         this.props.options.map(function (opt, ind) {
           return React.createElement(
             'li',

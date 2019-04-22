@@ -49,7 +49,7 @@ var CheckboxOptionsInput = (function (_React$Component) {
 
       return React.createElement(
         'ul',
-        { className: this.props.classes.checkboxList },
+        { className: this.props.classes.checkboxList, id: this.props.name },
         this.props.options.map(function (opt, index) {
           return React.createElement(
             'li',

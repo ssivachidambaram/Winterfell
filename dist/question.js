@@ -10,6 +10,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _fortawesomeReactFontawesome = require('@fortawesome/react-fontawesome');
+
 var React = require('react');
 var _ = require('lodash').noConflict();
 
@@ -18,10 +20,14 @@ var InputTypes = require('./inputTypes');
 var Question = (function (_React$Component) {
   _inherits(Question, _React$Component);
 
-  function Question() {
+  function Question(props) {
     _classCallCheck(this, Question);
 
-    _get(Object.getPrototypeOf(Question.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(Question.prototype), 'constructor', this).call(this, props);
+
+    this.state = {
+      displayConfirmation: this.props.displayConfirmation
+    };
   }
 
   _createClass(Question, [{
@@ -33,6 +39,13 @@ var Question = (function (_React$Component) {
     key: 'handleInputBlur',
     value: function handleInputBlur(questionId, value) {
       this.props.onQuestionBlur(questionId, value, this.props.validations, this.props.validateOn);
+    }
+  }, {
+    key: 'displayChange',
+    value: function displayChange() {
+      var display = this.state.displayConfirmation;
+      display.isNeed = !display.isNeed;
+      this.setState({ displayConfirmation: display });
     }
   }, {
     key: 'render',
@@ -99,6 +112,7 @@ var Question = (function (_React$Component) {
                 validations: conditionalQuestion.validations,
                 value: _this.props.questionAnswers[conditionalQuestion.questionId],
                 input: conditionalQuestion.input,
+                displayConfirmation: conditionalQuestion.displayConfirmation,
                 classes: _this.props.classes,
                 renderError: _this.props.renderError,
                 questionAnswers: _this.props.questionAnswers,
@@ -154,44 +168,68 @@ var Question = (function (_React$Component) {
       return React.createElement(
         'div',
         { className: this.props.classes.question + this.props.questionContainerClass + validationInputErrors },
-        !!this.props.question ? React.createElement(
-          'label',
-          { className: this.props.classes.label,
-            id: labelId,
-            htmlFor: this.props.questionId },
-          this.props.question,
-          typeof this.props.renderRequiredAsterisk !== 'undefined' && this.props.input.required ? this.props.renderRequiredAsterisk() : undefined,
-          !!this.props.text ? React.createElement(
-            'small',
-            { className: this.props.classes.questionText },
-            this.props.text
-          ) : undefined
-        ) : undefined,
-        React.createElement(Input, _extends({ name: this.props.questionId,
-          id: this.props.questionId,
-          labelId: labelId,
-          value: value,
-          defaultChecked: checked,
-          questionInputClass: this.props.input.questionInputClass,
-          text: this.props.input.text,
-          options: this.props.input.options,
-          conditionalAnswers: conditionalAnswers,
-          mappingConditionalAnswers: mappingConditionalAnswers,
-          placeholder: this.props.input.placeholder,
-          required: this.props.input.required,
-          classes: this.props.classes,
-          questionAnswers: this.props.questionAnswers,
-          onChange: this.handleInputChange.bind(this, this.props.questionId),
-          onBlur: this.handleInputBlur.bind(this, this.props.questionId),
-          onKeyDown: this.props.onKeyDown
-        }, typeof this.props.input.props === 'object' ? this.props.input.props : {})),
-        validationErrors,
-        !!this.props.postText ? React.createElement(
-          'p',
-          { className: this.props.classes.questionPostText },
-          this.props.postText
-        ) : undefined,
-        conditionalItems
+        this.state.displayConfirmation.isNeed && !this.state.displayConfirmation.icon && React.createElement(
+          React.Fragment,
+          null,
+          React.createElement(
+            'button',
+            { onClick: this.displayChange.bind(this) },
+            this.state.displayConfirmation.text
+          )
+        ),
+        this.state.displayConfirmation.isNeed && this.state.displayConfirmation.icon && React.createElement(
+          React.Fragment,
+          null,
+          React.createElement(
+            'a',
+            { onClick: this.displayChange.bind(this) },
+            ' ',
+            React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: this.state.displayConfirmation.icon, className: 'fa-fw text-24' }),
+            ' '
+          )
+        ),
+        !this.state.displayConfirmation.isNeed && React.createElement(
+          React.Fragment,
+          null,
+          !!this.props.question ? React.createElement(
+            'label',
+            { className: this.props.classes.label,
+              id: labelId,
+              htmlFor: this.props.questionId },
+            this.props.question,
+            typeof this.props.renderRequiredAsterisk !== 'undefined' && this.props.input.required ? this.props.renderRequiredAsterisk() : undefined,
+            !!this.props.text ? React.createElement(
+              'small',
+              { className: this.props.classes.questionText },
+              this.props.text
+            ) : undefined
+          ) : undefined,
+          React.createElement(Input, _extends({ name: this.props.questionId,
+            id: this.props.questionId,
+            labelId: labelId,
+            value: value,
+            defaultChecked: checked,
+            questionInputClass: this.props.input.questionInputClass,
+            text: this.props.input.text,
+            options: this.props.input.options,
+            conditionalAnswers: conditionalAnswers,
+            mappingConditionalAnswers: mappingConditionalAnswers,
+            placeholder: this.props.input.placeholder,
+            required: this.props.input.required,
+            classes: this.props.classes,
+            questionAnswers: this.props.questionAnswers,
+            onChange: this.handleInputChange.bind(this, this.props.questionId),
+            onBlur: this.handleInputBlur.bind(this, this.props.questionId),
+            onKeyDown: this.props.onKeyDown
+          }, typeof this.props.input.props === 'object' ? this.props.input.props : {})),
+          validationErrors,
+          !!this.props.postText ? React.createElement(
+            'p',
+            { className: this.props.classes.questionPostText },
+            this.props.postText
+          ) : undefined,
+          conditionalItems
+        )
       );
     }
   }, {
@@ -234,7 +272,12 @@ Question.defaultProps = {
   onQuestionBlur: function onQuestionBlur() {},
   onKeyDown: function onKeyDown() {},
   renderError: undefined,
-  renderRequiredAsterisk: undefined
+  renderRequiredAsterisk: undefined,
+  displayConfirmation: {
+    text: '',
+    icon: false,
+    isNeed: false
+  }
 };
 
 module.exports = Question;

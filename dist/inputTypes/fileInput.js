@@ -16,6 +16,8 @@ var _reactDropzone = require('react-dropzone');
 
 var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
+var _fortawesomeReactFontawesome = require('@fortawesome/react-fontawesome');
+
 var React = require('react');
 
 var FileInput = (function (_React$Component) {
@@ -25,9 +27,13 @@ var FileInput = (function (_React$Component) {
     _classCallCheck(this, FileInput);
 
     _get(Object.getPrototypeOf(FileInput.prototype), 'constructor', this).call(this, props);
-
+    var value = this.props.value;
+    if (this.props.options[0].multiple && value === '') {
+      value = [];
+    }
     this.state = {
-      value: this.props.value,
+      value: value,
+      multiple: this.props.options[0].multiple,
       progress: 0
     };
   }
@@ -38,6 +44,19 @@ var FileInput = (function (_React$Component) {
       this.setState({
         value: file
       }, this.props.onChange.bind(null, file, progress));
+    }
+  }, {
+    key: 'handleDelete',
+    value: function handleDelete(index) {
+      var temp = this.state.value;
+      if (this.state.multiple) {
+        temp = '';
+      } else {
+        temp.splice(index, 1);
+      }
+      this.setState({
+        value: temp
+      }, this.props.onChange.bind(null, temp));
     }
   }, {
     key: 'progressEvent',
@@ -58,18 +77,37 @@ var FileInput = (function (_React$Component) {
         onUploadProgress: this.progressEvent.bind(this)
       };
       if (files.length > 0) {
-        if (files[0].type.indexOf('image/') !== -1) {
-          Object.assign(files[0], {
-            preview: URL.createObjectURL(files[0])
+        if (!this.state.multiple) {
+          if (files[0].type.indexOf('image/') !== -1) {
+            Object.assign(files[0], {
+              preview: URL.createObjectURL(files[0])
+            });
+          } else {
+            Object.assign(files[0], {
+              filename: files[0].name
+            });
+          }
+          this.setState({
+            value: files[0]
+          }, this.props.onChange.bind(null, files[0], progress));
+        } else if (this.state.multiple) {
+          var temp = this.state.value;
+          files.forEach(function (option, index) {
+            if (files[index].type.indexOf('image/') !== -1) {
+              Object.assign(files[index], {
+                preview: URL.createObjectURL(files[index])
+              });
+            } else {
+              Object.assign(files[index], {
+                filename: files[index].name
+              });
+            }
+            temp.push(files[index]);
           });
-        } else {
-          Object.assign(files[0], {
-            filename: files[0].name
-          });
+          this.setState({
+            value: temp
+          }, this.props.onChange.bind(null, temp, progress));
         }
-        this.setState({
-          value: files[0]
-        }, this.props.onChange.bind(null, files[0], progress));
       }
     }
   }, {
@@ -145,37 +183,93 @@ var FileInput = (function (_React$Component) {
       }
       var oldFile = false;
       var imageFile = false;
-      if (this.state.value && !this.state.value.preview && !this.state.value.filename) {
+      var files = [];
+      var panels = '';
+      if (this.state.value && !this.state.value.preview && !this.state.value.filename && !this.state.multiple) {
         oldFile = true;
         if (this.state.value.indexOf('.jpg') > -1 || this.state.value.indexOf('.jpeg') > -1 || this.state.value.indexOf('.png') > -1 || this.state.value.indexOf('.gif') > -1) {
           imageFile = true;
         }
+        panels = '';
+      }
+      if (this.state.multiple) {
+        panels = this.state.value.map(function (files, keys) {
+          var oldFile = false;
+          var imageFile = false;
+          if (files && !files.preview && !files.filename) {
+            oldFile = true;
+            if (files && !files.preview && !files.filename && (files.indexOf('.jpg') > -1 || files.indexOf('.jpeg') > -1 || files.indexOf('.png') > -1 || files.indexOf('.gif') > -1)) {
+              imageFile = true;
+            }
+          }
+          return React.createElement(
+            React.Fragment,
+            null,
+            files && files.preview && React.createElement(
+              React.Fragment,
+              null,
+              React.createElement('img', { src: files.preview, style: img }),
+              React.createElement(
+                'a',
+                { onClick: _this.handleDelete(keys) },
+                ' ',
+                React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'comment', className: 'fa-fw' }),
+                ' '
+              )
+            ),
+            files && files.filename && React.createElement(
+              'p',
+              null,
+              files.filename
+            ),
+            oldFile && imageFile && React.createElement('img', { src: '/img/100x100,sc/' + files, style: img }),
+            oldFile && !imageFile && React.createElement(
+              'p',
+              null,
+              React.createElement(
+                'a',
+                { href: '/private_media/' + files, target: '_blank' },
+                files,
+                ' '
+              )
+            )
+          );
+        });
       }
       return React.createElement(
         'section',
         null,
-        this.state.value && this.state.value.preview && React.createElement('img', { src: this.state.value.preview, style: img }),
-        this.state.value && this.state.value.filename && React.createElement(
-          'p',
+        !this.state.multiple && React.createElement(
+          React.Fragment,
           null,
-          this.state.value.filename
-        ),
-        oldFile && imageFile && React.createElement('img', { src: '/img/100x100,sc/' + this.state.value, style: img }),
-        oldFile && !imageFile && React.createElement(
-          'p',
-          null,
-          React.createElement(
-            'a',
-            { href: '/private_media/' + this.state.value, target: '_blank' },
-            this.state.value,
-            ' '
+          this.state.value && this.state.value.preview && React.createElement('img', { src: this.state.value.preview, style: img }),
+          this.state.value && this.state.value.filename && React.createElement(
+            'p',
+            null,
+            this.state.value.filename
+          ),
+          oldFile && imageFile && React.createElement('img', { src: '/img/100x100,sc/' + this.state.value, style: img }),
+          oldFile && !imageFile && React.createElement(
+            'p',
+            null,
+            React.createElement(
+              'a',
+              { href: '/private_media/' + this.state.value, target: '_blank' },
+              this.state.value,
+              ' '
+            )
           )
+        ),
+        this.state.multiple && React.createElement(
+          React.Fragment,
+          null,
+          panels
         ),
         React.createElement(
           _reactDropzone2['default'],
           {
             accept: this.props.text,
-            multiple: false,
+            multiple: this.state.multiple,
             name: this.props.name,
             onDrop: this.onDrop.bind(this),
             onChange: this.handleChange.bind(this)
@@ -242,6 +336,7 @@ FileInput.defaultProps = {
   name: '',
   id: '',
   value: '',
+  options: [{ 'multiple': false }],
   onChange: function onChange() {},
   onBlur: function onBlur() {}
 };

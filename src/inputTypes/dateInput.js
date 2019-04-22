@@ -20,11 +20,13 @@ class DateInput extends React.Component {
 
   render() {
     return (
+      <div id={this.props.name}>
       <DatePicker
         selected={this.state.value}
         onChange={this.handleChange.bind(this)}
-        className={this.props.classes.input}
+        className={this.props.classes.input}        
       />
+      </div>
     );
   }
 
