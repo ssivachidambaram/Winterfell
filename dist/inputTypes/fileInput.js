@@ -49,14 +49,14 @@ var FileInput = (function (_React$Component) {
     key: 'handleDelete',
     value: function handleDelete(index) {
       var temp = this.state.value;
-      if (this.state.multiple) {
+      if (!this.state.multiple) {
         temp = '';
       } else {
         temp.splice(index, 1);
       }
       this.setState({
         value: temp
-      }, this.props.onChange.bind(null, temp));
+      }, this.props.onChange.bind(null, temp, 'delete:' + index));
     }
   }, {
     key: 'progressEvent',
@@ -193,6 +193,7 @@ var FileInput = (function (_React$Component) {
         panels = '';
       }
       if (this.state.multiple) {
+        if (this.state.value.length < 0) return '';
         panels = this.state.value.map(function (files, keys) {
           var oldFile = false;
           var imageFile = false;
@@ -206,23 +207,41 @@ var FileInput = (function (_React$Component) {
             React.Fragment,
             null,
             files && files.preview && React.createElement(
-              React.Fragment,
-              null,
+              'div',
+              { className: 'position-relative d-inline-block mx-2' },
               React.createElement('img', { src: files.preview, style: img }),
               React.createElement(
                 'a',
-                { onClick: _this.handleDelete(keys) },
+                { onClick: _this.handleDelete.bind(_this, keys), className: 'position-absolute deleted' },
                 ' ',
-                React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'comment', className: 'fa-fw' }),
+                React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
                 ' '
               )
             ),
             files && files.filename && React.createElement(
               'p',
               null,
-              files.filename
+              files.filename,
+              React.createElement(
+                'a',
+                { onClick: _this.handleDelete.bind(_this, keys) },
+                ' ',
+                React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
+                ' '
+              )
             ),
-            oldFile && imageFile && React.createElement('img', { src: '/img/100x100,sc/' + files, style: img }),
+            oldFile && imageFile && React.createElement(
+              'div',
+              { 'class': 'position-relative d-inline-block mx-2' },
+              React.createElement('img', { src: '/img/100x100,sc/' + files, style: img }),
+              React.createElement(
+                'a',
+                { onClick: _this.handleDelete.bind(_this, keys), className: 'position-absolute deleted' },
+                ' ',
+                React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
+                ' '
+              )
+            ),
             oldFile && !imageFile && React.createElement(
               'p',
               null,
@@ -230,6 +249,13 @@ var FileInput = (function (_React$Component) {
                 'a',
                 { href: '/private_media/' + files, target: '_blank' },
                 files,
+                ' '
+              ),
+              React.createElement(
+                'a',
+                { onClick: _this.handleDelete.bind(_this, keys) },
+                ' ',
+                React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
                 ' '
               )
             )

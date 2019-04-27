@@ -14,7 +14,8 @@ var inputTypes = {
   selectInput: require('./selectInput'),
   textareaInput: require('./textareaInput'),
   textInput: require('./textInput'),
-  dateInput: require('./dateInput')
+  dateInput: require('./dateInput'),
+  htmlInput: require('./htmlInput')
 };
 
 /**

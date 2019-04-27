@@ -4,32 +4,27 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _resizePolyfill = require('resize-polyfill');
-
-var _resizePolyfill2 = _interopRequireDefault(_resizePolyfill);
-
 var React = require('react');
 
-var TextareaInput = (function (_React$Component) {
-  _inherits(TextareaInput, _React$Component);
+var HtmlInput = (function (_React$Component) {
+  _inherits(HtmlInput, _React$Component);
 
-  function TextareaInput(props) {
-    _classCallCheck(this, TextareaInput);
+  function HtmlInput(props) {
+    _classCallCheck(this, HtmlInput);
 
-    _get(Object.getPrototypeOf(TextareaInput.prototype), 'constructor', this).call(this, props);
-
+    _get(Object.getPrototypeOf(HtmlInput.prototype), 'constructor', this).call(this, props);
+    console.log('cont', this.props.value);
+    console.log('conttext', this.props.text);
     this.state = {
-      value: this.props.value
+      text: this.props.text
     };
   }
 
-  _createClass(TextareaInput, [{
+  _createClass(HtmlInput, [{
     key: 'handleChange',
     value: function handleChange(e) {
       this.setState({
@@ -37,42 +32,37 @@ var TextareaInput = (function (_React$Component) {
       }, this.props.onChange.bind(null, e.target.value));
     }
   }, {
+    key: 'createMarkup',
+    value: function createMarkup(panelHtml) {
+      console.log(panelHtml);
+      return { __html: panelHtml };
+    }
+  }, {
     key: 'render',
     value: function render() {
-      return React.createElement('textarea', { type: 'text',
-        name: this.props.name,
-        id: this.props.id,
-        'aria-labelledby': this.props.labelId,
-        className: this.props.classes.textAreaInput,
-        placeholder: this.props.placeholder,
-        value: this.state.value,
-        rows: this.props.rows,
-        required: this.props.required ? 'required' : undefined,
-        onChange: this.handleChange.bind(this),
-        onBlur: this.props.onBlur.bind(null, this.state.value),
-        ref: function (el) {
-          if (el) {
-            (0, _resizePolyfill2['default'])(el, true);
-          }
-        }
-      });
+      return React.createElement(
+        React.Fragment,
+        null,
+        typeof this.state.text !== 'undefined' ? React.createElement('div', { dangerouslySetInnerHTML: this.createMarkup(this.state.text) }) : ""
+      );
     }
   }]);
 
-  return TextareaInput;
+  return HtmlInput;
 })(React.Component);
 
 ;
 
-TextareaInput.defaultProps = {
+HtmlInput.defaultProps = {
   classes: {},
   name: '',
   id: '',
   value: '',
+  text: '',
   placeholder: '',
   onChange: function onChange() {},
   onBlur: function onBlur() {},
-  rows: 3
+  onKeyDown: function onKeyDown() {}
 };
 
-module.exports = TextareaInput;
+module.exports = HtmlInput;

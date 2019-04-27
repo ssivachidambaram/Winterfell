@@ -1,4 +1,5 @@
 var React = require('react');
+import resizePolyfill from 'resize-polyfill';
 
 class TextareaInput extends React.Component {
 
@@ -30,7 +31,13 @@ class TextareaInput extends React.Component {
                             ? 'required'
                             : undefined}
                 onChange={this.handleChange.bind(this)}
-                onBlur={this.props.onBlur.bind(null, this.state.value)} />
+                onBlur={this.props.onBlur.bind(null, this.state.value)} 
+                ref={(el) => {
+                  if (el) {
+                    resizePolyfill(el, true);
+                  }
+                }}
+                />
     );
   }
 

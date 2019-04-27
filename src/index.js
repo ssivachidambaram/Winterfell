@@ -6,10 +6,12 @@ var QuestionPanel = require('./questionPanel');
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faPaperclip,
+  faTimesCircle,
   faComment
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faPaperclip,
+  faTimesCircle,
   faComment,
 );
 

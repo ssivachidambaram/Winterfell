@@ -26,7 +26,7 @@ class FileInput extends React.Component {
 
   handleDelete(index) {
     var temp = this.state.value;
-    if(this.state.multiple){
+    if(!this.state.multiple){
       temp = '';
     }else{
       temp.splice(index, 1);
@@ -35,7 +35,7 @@ class FileInput extends React.Component {
       {
         value: temp
       },
-      this.props.onChange.bind(null, temp)
+      this.props.onChange.bind(null, temp, 'delete:'+index)
     );
   }  
 
@@ -168,6 +168,7 @@ class FileInput extends React.Component {
       panels = '';
       }
     if(this.state.multiple){
+      if(this.state.value.length < 0) return '';
       panels = this.state.value.map((files, keys) => {
         let oldFile = false ;
         let imageFile = false;
@@ -180,19 +181,26 @@ class FileInput extends React.Component {
         return (
           <React.Fragment>
             {files && files.preview && (
-              <React.Fragment>
-              <img src={files.preview} style={img}  />
-              <a onClick={this.handleDelete(keys)}> <FontAwesomeIcon icon="comment" className="fa-fw" /> </a>
-              </React.Fragment>
+              <div className="position-relative d-inline-block mx-2">
+                <img src={files.preview} style={img}  />
+                <a onClick={this.handleDelete.bind(this, keys)} className="position-absolute deleted"> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a>
+              </div>
             )}
             {files && files.filename && (
-              <p>{files.filename}</p>
+              <p>{files.filename}<a onClick={this.handleDelete.bind(this, keys)}> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a></p>
+              
             )}
             {oldFile && imageFile && (
+              <div class="position-relative d-inline-block mx-2">
               <img src={`/img/100x100,sc/${files}`} style={img} />
+              <a onClick={this.handleDelete.bind(this, keys)} className="position-absolute deleted"> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a>
+              </div>
             )}
             {oldFile && !imageFile && (
-              <p><a href={`/private_media/${files}`} target="_blank">{files} </a></p>
+              <p>
+                <a href={`/private_media/${files}`} target="_blank">{files} </a>
+                <a onClick={this.handleDelete.bind(this, keys)}> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a>
+              </p>
             )}
           </React.Fragment>
         );
