@@ -31,6 +31,13 @@ var RadioOptionsInput = (function (_React$Component) {
       }, this.props.onChange.bind(null, value));
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.value !== nextProps.value) {
+        this.setState({ value: nextProps.value });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this = this;

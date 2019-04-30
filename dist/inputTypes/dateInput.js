@@ -39,6 +39,13 @@ var DateInput = (function (_React$Component) {
       }, this.props.onChange.bind(null, date));
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.value !== nextProps.value) {
+        this.setState({ value: nextProps.value });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(

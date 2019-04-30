@@ -4,7 +4,6 @@ class TextInput extends React.Component {
 
   constructor(props) {
     super(props);
-    
     this.state = {
       value : this.props.value
     };
@@ -14,6 +13,12 @@ class TextInput extends React.Component {
     this.setState({
       value : e.target.value
     }, this.props.onChange.bind(null, e.target.value));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.setState({ value: nextProps.value });
+    }
   }
 
   render() {

@@ -18,6 +18,12 @@ class DateInput extends React.Component {
     }, this.props.onChange.bind(null, date));
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.setState({ value: nextProps.value });
+    }
+  }
+
   render() {
     return (
       <div id={this.props.name}>

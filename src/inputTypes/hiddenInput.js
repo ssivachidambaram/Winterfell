@@ -10,6 +10,12 @@ class HiddenInput extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.setState({ value: nextProps.value });
+    }
+  }
+
   render() {
     return (
       <input type="hidden"

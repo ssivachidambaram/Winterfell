@@ -17,7 +17,6 @@ var TextInput = (function (_React$Component) {
     _classCallCheck(this, TextInput);
 
     _get(Object.getPrototypeOf(TextInput.prototype), 'constructor', this).call(this, props);
-
     this.state = {
       value: this.props.value
     };
@@ -29,6 +28,13 @@ var TextInput = (function (_React$Component) {
       this.setState({
         value: e.target.value
       }, this.props.onChange.bind(null, e.target.value));
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.value !== nextProps.value) {
+        this.setState({ value: nextProps.value });
+      }
     }
   }, {
     key: 'render',

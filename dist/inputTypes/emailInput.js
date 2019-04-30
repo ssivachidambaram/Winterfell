@@ -31,6 +31,13 @@ var EmailInput = (function (_React$Component) {
       }, this.props.onChange.bind(null, e.target.value));
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.value !== nextProps.value) {
+        this.setState({ value: nextProps.value });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement('input', { type: 'email',
