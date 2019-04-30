@@ -13,6 +13,49 @@ class QuestionSetWrapper extends React.Component {
   render() {
     const questionSetWrapper = this.props.questionSetWrapper;
     const questionSet = this.props.questionSet;
+    const questionSetId = this.props.questionSetId;
+    const addMoreQuestionSets = this.props.addMoreQuestionSets;
+    const questionAnswers = this.props.questionAnswers;
+    var showAddMore = false, showRemoveMore = false;
+    var addMoreName = '', addMoreButton = '', addMoreButtonClass = '', removeMoreButton = '', removeMoreButtonClass = '', removeQuestionSetIndex = '';
+    var removeQuestionSets = Array(), originalQuestionSets = Array();
+    if (addMoreQuestionSets) {
+      addMoreQuestionSets.forEach((addMoreQuestionSet) => {
+        originalQuestionSets = addMoreQuestionSet.questionSets;
+        var lastQuestionSet = addMoreQuestionSet.questionSets[addMoreQuestionSet.questionSets.length-1];
+        var removeQuestionSetIds = Array();
+        if (questionAnswers[addMoreQuestionSet.addMoreName] > 1) {
+          for (var i = 1; i <= questionAnswers[addMoreQuestionSet.addMoreName]; i++) {
+            if (i > 1) {
+              removeQuestionSetIds.push(lastQuestionSet + '_' + i);
+              var tmpRemoveQuestionSet = Array();
+              addMoreQuestionSet.questionSets.forEach(questionSet => {
+                tmpRemoveQuestionSet.push(questionSet + '_' + i);
+              });
+              removeQuestionSets.push(tmpRemoveQuestionSet);
+            } else {
+              removeQuestionSetIds.push(lastQuestionSet);
+              removeQuestionSets.push(addMoreQuestionSet.questionSets);
+            }
+          }
+        }
+        if (questionAnswers[addMoreQuestionSet.addMoreName] > 1) {
+          lastQuestionSet = lastQuestionSet + '_' + questionAnswers[addMoreQuestionSet.addMoreName];
+        }
+        addMoreName = addMoreQuestionSet.addMoreName;
+        if (lastQuestionSet === questionSetId) {
+          showAddMore = true;
+          addMoreButton = addMoreQuestionSet.addMoreButton;
+          addMoreButtonClass = addMoreQuestionSet.addMoreButtonClass;
+        }
+        removeQuestionSetIndex = _.indexOf(removeQuestionSetIds, questionSetId);
+        if (removeQuestionSetIndex !== -1) {
+          showRemoveMore = true;
+          removeMoreButton = addMoreQuestionSet.removeMoreButton;
+          removeMoreButtonClass = addMoreQuestionSet.removeMoreButtonClass;
+        }
+      });
+    }
     if (questionSetWrapper) {
       const element = questionSetWrapper.element ? questionSetWrapper.element : 'div';
       const children = <QuestionSetWrapper questionSetWrapper={questionSetWrapper.children} questionSet={questionSet} />
@@ -21,7 +64,15 @@ class QuestionSetWrapper extends React.Component {
       )
     } else {
       return (
-        <React.Fragment>{questionSet}</React.Fragment>
+        <React.Fragment>
+          {questionSet}
+          {showAddMore && (
+            <a href="javascript:;" className={addMoreButtonClass} onClick={() => this.props.onAddMore(addMoreName)}>{addMoreButton}</a>
+          )}
+          {showRemoveMore && (
+            <a href="javascript:;" className={removeMoreButtonClass} onClick={() => this.props.onRemoveMore(addMoreName, originalQuestionSets, removeQuestionSetIndex, removeQuestionSets[removeQuestionSetIndex])}>{removeMoreButton}</a>
+          )}
+        </React.Fragment>
       );
     }
   }
@@ -226,7 +277,7 @@ class QuestionPanel extends React.Component {
                                               onKeyDown={this.handleInputKeyDown.bind(this)} />
 
       return (
-        <QuestionSetWrapper questionSetWrapper={questionSet.questionSetWrapper} questionSet={questionSetComponent} />
+        <QuestionSetWrapper questionSetWrapper={questionSet.questionSetWrapper} questionSet={questionSetComponent} addMoreQuestionSets={this.props.addMoreQuestionSets} onAddMore={this.props.onAddMore} onRemoveMore={this.props.onRemoveMore} questionSetId={questionSet.questionSetId} questionAnswers={this.props.questionAnswers} />
       );
     });
 
@@ -310,6 +361,7 @@ QuestionPanel.defaultProps = {
     text: 'Back'
   },
   questionSets: [],
+  addMoreQuestionSets: [],
   questionAnswers: {},
   renderError: undefined,
   renderRequiredAsterisk: undefined,

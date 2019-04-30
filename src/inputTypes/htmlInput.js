@@ -4,8 +4,6 @@ class HtmlInput extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('cont', this.props.value);
-    console.log('conttext', this.props.text);
     this.state = {
       text : this.props.text
     };
@@ -18,7 +16,6 @@ class HtmlInput extends React.Component {
   }
 
   createMarkup(panelHtml) {
-    console.log(panelHtml);
     return {__html: panelHtml};
   }
 

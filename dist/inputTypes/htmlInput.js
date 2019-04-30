@@ -17,8 +17,6 @@ var HtmlInput = (function (_React$Component) {
     _classCallCheck(this, HtmlInput);
 
     _get(Object.getPrototypeOf(HtmlInput.prototype), 'constructor', this).call(this, props);
-    console.log('cont', this.props.value);
-    console.log('conttext', this.props.text);
     this.state = {
       text: this.props.text
     };
@@ -34,7 +32,6 @@ var HtmlInput = (function (_React$Component) {
   }, {
     key: 'createMarkup',
     value: function createMarkup(panelHtml) {
-      console.log(panelHtml);
       return { __html: panelHtml };
     }
   }, {

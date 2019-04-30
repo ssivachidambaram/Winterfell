@@ -30,6 +30,8 @@ class Winterfell extends React.Component {
       questionPanels : [],
       questionSets   : [],
     }, props.schema);
+    this.schema = schema;
+    schema = this.updateSchema();
 
     schema.formPanels = schema.formPanels
                               .sort((a, b) => a.index > b.index);
@@ -57,13 +59,131 @@ class Winterfell extends React.Component {
       action          : props.action,
       questionAnswers : props.questionAnswers
     };
+    this.updateSchema = this.updateSchema.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    var schema = this.updateSchema();
     this.setState({
       action          : nextProps.action,
-      schema          : nextProps.schema,
+      schema          : schema,
       questionAnswers : nextProps.questionAnswers
+    });
+  }
+
+  updateSchema() {
+    var schema = _.cloneDeep(this.schema);
+    var questionAnswers = this.state ? this.state.questionAnswers : [];
+    var addMoreQuestionSets = Array();
+    schema.questionPanels.forEach((questionPanel, questionPanelIndex) => {
+      if (questionPanel.addMoreQuestionSets) {
+        questionPanel.addMoreQuestionSets.forEach((addMoreQuestionSet) => {
+          var questionSetIds = Array();
+          for (var i = 0; i < schema.questionSets.length; i++) {
+            if (_.indexOf(addMoreQuestionSet.questionSets, schema.questionSets[i].questionSetId) !== -1) {
+              questionSetIds.push(i);
+            }
+          }
+          addMoreQuestionSets.push({
+            addMoreName: addMoreQuestionSet.addMoreName,
+            questionSets: addMoreQuestionSet.questionSets,
+            questionSetIds: questionSetIds,
+            questionPanelIndex: questionPanelIndex,
+          });
+        });
+      }
+    });
+    if (addMoreQuestionSets.length) {
+      addMoreQuestionSets.forEach((addMoreQuestionSet) => {
+        var questionSetAddMore = questionAnswers[addMoreQuestionSet.addMoreName]
+          ? questionAnswers[addMoreQuestionSet.addMoreName]
+          : 1;
+        var questionPanelQuestionSetIds = Array();
+        for (var j = 1; j <= questionSetAddMore; j++) {
+          addMoreQuestionSet.questionSetIds.forEach((questionSetId) => {
+            var newQuestions = Array();
+            schema.questionSets[questionSetId].questions.forEach(question => {
+              var tmpQuestion = _.cloneDeep(question);
+              tmpQuestion.questionId = tmpQuestion.questionId.replace('_1', '') + '_' + j;
+              newQuestions.push(tmpQuestion);
+            });
+            if (j === 1) {
+              schema.questionSets[questionSetId].questions = newQuestions;
+            } else {
+              var tmpQuestionSet = _.cloneDeep(schema.questionSets[questionSetId]);
+              tmpQuestionSet.questionSetId = tmpQuestionSet.questionSetId + '_' + j;
+              questionPanelQuestionSetIds.push(tmpQuestionSet.questionSetId);
+              tmpQuestionSet.questions = newQuestions;
+              schema.questionSets.push(tmpQuestionSet);
+            }
+          });
+        }
+        if (questionPanelQuestionSetIds.length) {
+          var newQuestionSets = Array();
+          schema.questionPanels[addMoreQuestionSet.questionPanelIndex].questionSets.forEach((questionSet) => {
+            newQuestionSets.push(questionSet);
+            var lastQuestionSet = addMoreQuestionSet.questionSets[addMoreQuestionSet.questionSets.length-1];
+            if (questionSet.questionSetId === lastQuestionSet) {
+              questionPanelQuestionSetIds.forEach((questionPanelQuestionSetId) => {
+                newQuestionSets.push({
+                  index: questionSet.index,
+                  questionSetId: questionPanelQuestionSetId,
+                });
+              });
+            }
+          });
+          schema.questionPanels[addMoreQuestionSet.questionPanelIndex].questionSets = newQuestionSets;
+        }
+      });
+    }
+    return schema;
+  }
+
+  handleAddMore(addMoreName) {
+    var questionAnswers = this.state.questionAnswers;
+    questionAnswers[addMoreName] = questionAnswers[addMoreName]
+      ? ++questionAnswers[addMoreName]
+      : 2;
+    this.setState({
+      questionAnswers: questionAnswers
+    });
+    var schema = this.updateSchema();
+    this.setState({
+      schema: schema
+    });
+  }
+
+  handleRemoveMore(addMoreName, originalQuestionSets, removeQuestionSetIndex, removeQuestionSets) {
+    var questionAnswers = this.state.questionAnswers;
+    if (removeQuestionSets.length) {
+      removeQuestionSets.forEach(removeQuestionSet => {
+        var questionSet = _.find(this.state.schema.questionSets, {
+          questionSetId: removeQuestionSet
+        });
+        questionSet.questions.forEach(question => {
+          delete questionAnswers[question.questionId];
+        });
+      });
+    }
+    for (var i = removeQuestionSetIndex+1; i < questionAnswers[addMoreName]; i++) {
+      originalQuestionSets.forEach(originalQuestionSet => {
+        var questionSet = _.find(this.schema.questionSets, {
+          questionSetId: originalQuestionSet
+        });
+        questionSet.questions.forEach(question => {
+          var j = i + 1;
+          questionAnswers[question.questionId + '_' + i] = (questionAnswers[question.questionId + '_' + j]) ? questionAnswers[question.questionId + '_' + j] : '';
+          delete questionAnswers[question.questionId + '_' + j];
+        });
+      });
+    }
+    questionAnswers[addMoreName] = --questionAnswers[addMoreName];
+    this.setState({
+      questionAnswers: questionAnswers
+    });
+    var schema = this.updateSchema();
+    this.setState({
+      schema: schema
     });
   }
 
@@ -80,7 +200,8 @@ class Winterfell extends React.Component {
   }
 
   handleSwitchPanel(panelId, preventHistory) {
-    var panel = _.find(this.props.schema.formPanels, {
+    var schema = this.updateSchema();
+    var panel = _.find(schema.formPanels, {
       panelId : panelId
     });
 
@@ -149,6 +270,7 @@ class Winterfell extends React.Component {
                          button={currentPanel.button}
                          backButton={currentPanel.backButton}
                          questionSets={currentPanel.questionSets}
+                         addMoreQuestionSets={currentPanel.addMoreQuestionSets}
                          questionAnswers={this.state.questionAnswers}
                          panelHistory={this.panelHistory}
                          renderError={this.props.renderError}
@@ -158,6 +280,8 @@ class Winterfell extends React.Component {
                          onSwitchPanel={this.handleSwitchPanel.bind(this)}
                          onSubmit={this.handleSubmit.bind(this)}
                          onValidationErrors={this.props.onValidationErrors}
+                         onAddMore={this.handleAddMore.bind(this)}
+                         onRemoveMore={this.handleRemoveMore.bind(this)}
             />
         </div>
       </form>
