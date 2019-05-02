@@ -8,6 +8,7 @@ var ErrorMessages = require('./lib/errors');
 var Button = require('./button');
 var QuestionSet = require('./questionSet');
 var evaluatePredicates = require('./lib/evaluatePredicates');
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class QuestionSetWrapper extends React.Component {
   render() {
@@ -66,11 +67,15 @@ class QuestionSetWrapper extends React.Component {
       return (
         <React.Fragment>
           {questionSet}
-          {showAddMore && (
-            <a href="javascript:;" className={addMoreButtonClass} onClick={() => this.props.onAddMore(addMoreName)}>{addMoreButton}</a>
-          )}
-          {showRemoveMore && (
-            <a href="javascript:;" className={removeMoreButtonClass} onClick={() => this.props.onRemoveMore(addMoreName, originalQuestionSets, removeQuestionSetIndex, removeQuestionSets[removeQuestionSetIndex])}>{removeMoreButton}</a>
+          {(showAddMore || showRemoveMore) && (
+            <div className="d-flex justify-content-end">
+              {showAddMore && (
+                <a href="javascript:;" className={addMoreButtonClass} onClick={() => this.props.onAddMore(addMoreName)}><FontAwesomeIcon icon="plus" className="fa-fw" /> {addMoreButton}</a>
+              )}
+              {showRemoveMore && (
+                <a href="javascript:;" className={removeMoreButtonClass} onClick={() => this.props.onRemoveMore(addMoreName, originalQuestionSets, removeQuestionSetIndex, removeQuestionSets[removeQuestionSetIndex])}><FontAwesomeIcon icon="minus" className="fa-fw" /> {removeMoreButton}</a>
+              )}
+            </div>
           )}
         </React.Fragment>
       );
@@ -321,14 +326,14 @@ class QuestionPanel extends React.Component {
           {this.props.panelHistory.length > 1
             && !this.props.backButton.disabled
             ? (
-              <Button text={this.props.backButton.text || 'Back'}
+              <Button text={this.props.backButton.text || 'Back'} condition={this.props.button.condition} questionAnswers={this.props.questionAnswers}
                 onClick={this.handleBackButtonClick.bind(this)}
                 className={this.props.classes.backButton} />
             )
             : undefined}
           {!this.props.button.disabled
             ? (
-              <Button text={this.props.button.text}
+              <Button text={this.props.button.text} condition={this.props.button.condition} questionAnswers={this.props.questionAnswers}
                 onClick={this.handleMainButtonClick.bind(this)}
                 className={this.props.classes.controlButton} />
             )
@@ -355,7 +360,12 @@ QuestionPanel.defaultProps = {
     conditions: []
   },
   button: {
-    text: 'Submit'
+    text: 'Submit',
+    condition:{
+      field: '',
+      text: '',
+      value: ''
+    }
   },
   backButton: {
     text: 'Back'

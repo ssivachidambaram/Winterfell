@@ -29,12 +29,18 @@ var Button = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var text = this.props.text;
+      if (this.props.condition.field !== '' && this.props.condition.value !== '') {
+        if (this.props.questionAnswers[this.props.condition.field] !== undefined && this.props.condition.value.indexOf(this.props.questionAnswers[this.props.condition.field]) > -1) {
+          text = this.props.condition.text;
+        }
+      }
       return React.createElement(
         'button',
         { href: '#',
           className: this.props.className,
           onClick: this.handleClick.bind(this) },
-        this.props.text
+        text
       );
     }
   }]);
@@ -47,7 +53,13 @@ var Button = (function (_React$Component) {
 Button.defaultProps = {
   text: 'Submit',
   className: undefined,
-  onClick: function onClick() {}
+  onClick: function onClick() {},
+  condition: {
+    field: '',
+    text: '',
+    value: ''
+  },
+  questionAnswers: {}
 };
 
 module.exports = Button;

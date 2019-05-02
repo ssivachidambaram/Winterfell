@@ -8,6 +8,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _fortawesomeReactFontawesome = require('@fortawesome/react-fontawesome');
+
 var React = require('react');
 var _ = require('lodash').noConflict();
 var KeyCodez = require('keycodez');
@@ -94,19 +96,27 @@ var QuestionSetWrapper = (function (_React$Component) {
           React.Fragment,
           null,
           questionSet,
-          showAddMore && React.createElement(
-            'a',
-            { href: 'javascript:;', className: addMoreButtonClass, onClick: function () {
-                return _this.props.onAddMore(addMoreName);
-              } },
-            addMoreButton
-          ),
-          showRemoveMore && React.createElement(
-            'a',
-            { href: 'javascript:;', className: removeMoreButtonClass, onClick: function () {
-                return _this.props.onRemoveMore(addMoreName, originalQuestionSets, removeQuestionSetIndex, removeQuestionSets[removeQuestionSetIndex]);
-              } },
-            removeMoreButton
+          (showAddMore || showRemoveMore) && React.createElement(
+            'div',
+            { className: 'd-flex justify-content-end' },
+            showAddMore && React.createElement(
+              'a',
+              { href: 'javascript:;', className: addMoreButtonClass, onClick: function () {
+                  return _this.props.onAddMore(addMoreName);
+                } },
+              React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'plus', className: 'fa-fw' }),
+              ' ',
+              addMoreButton
+            ),
+            showRemoveMore && React.createElement(
+              'a',
+              { href: 'javascript:;', className: removeMoreButtonClass, onClick: function () {
+                  return _this.props.onRemoveMore(addMoreName, originalQuestionSets, removeQuestionSetIndex, removeQuestionSets[removeQuestionSetIndex]);
+                } },
+              React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'minus', className: 'fa-fw' }),
+              ' ',
+              removeMoreButton
+            )
           )
         );
       }
@@ -362,10 +372,10 @@ var QuestionPanel = (function (_React$Component2) {
         React.createElement(
           'div',
           { className: this.props.classes.buttonBar },
-          this.props.panelHistory.length > 1 && !this.props.backButton.disabled ? React.createElement(Button, { text: this.props.backButton.text || 'Back',
+          this.props.panelHistory.length > 1 && !this.props.backButton.disabled ? React.createElement(Button, { text: this.props.backButton.text || 'Back', condition: this.props.button.condition, questionAnswers: this.props.questionAnswers,
             onClick: this.handleBackButtonClick.bind(this),
             className: this.props.classes.backButton }) : undefined,
-          !this.props.button.disabled ? React.createElement(Button, { text: this.props.button.text,
+          !this.props.button.disabled ? React.createElement(Button, { text: this.props.button.text, condition: this.props.button.condition, questionAnswers: this.props.questionAnswers,
             onClick: this.handleMainButtonClick.bind(this),
             className: this.props.classes.controlButton }) : undefined
         )
@@ -393,7 +403,12 @@ QuestionPanel.defaultProps = {
     conditions: []
   },
   button: {
-    text: 'Submit'
+    text: 'Submit',
+    condition: {
+      field: '',
+      text: '',
+      value: ''
+    }
   },
   backButton: {
     text: 'Back'

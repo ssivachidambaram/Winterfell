@@ -7,12 +7,16 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faPaperclip,
   faTimesCircle,
-  faComment
+  faComment,
+  faPlus,
+  faMinus,
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faPaperclip,
   faTimesCircle,
   faComment,
+  faPlus,
+  faMinus,
 );
 
 class Winterfell extends React.Component {
