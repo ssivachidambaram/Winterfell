@@ -8,9 +8,12 @@ class Question extends React.Component {
 
   constructor(props) {
     super(props);
-    
+    var displayConfirmation = this.props.displayConfirmation;
+    if(displayConfirmation.isNeed && (this.props.value !== undefined && this.props.value !== '') ){
+      displayConfirmation.isNeed = false;
+    }
     this.state = {
-      displayConfirmation : this.props.displayConfirmation,
+      displayConfirmation : displayConfirmation,
     };
   }  
 

@@ -24,9 +24,12 @@ var Question = (function (_React$Component) {
     _classCallCheck(this, Question);
 
     _get(Object.getPrototypeOf(Question.prototype), 'constructor', this).call(this, props);
-
+    var displayConfirmation = this.props.displayConfirmation;
+    if (displayConfirmation.isNeed && this.props.value !== undefined && this.props.value !== '') {
+      displayConfirmation.isNeed = false;
+    }
     this.state = {
-      displayConfirmation: this.props.displayConfirmation
+      displayConfirmation: displayConfirmation
     };
   }
 

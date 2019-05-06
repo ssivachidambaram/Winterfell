@@ -268,13 +268,42 @@ var FileInput = (function (_React$Component) {
         !this.state.multiple && React.createElement(
           React.Fragment,
           null,
-          this.state.value && this.state.value.preview && React.createElement('img', { src: this.state.value.preview, style: img }),
+          this.state.value && this.state.value.preview && React.createElement(
+            'div',
+            { className: 'position-relative d-inline-block mx-2' },
+            React.createElement('img', { src: this.state.value.preview, style: img }),
+            React.createElement(
+              'a',
+              { onClick: this.handleDelete.bind(this), className: 'position-absolute deleted' },
+              ' ',
+              React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
+              ' '
+            )
+          ),
           this.state.value && this.state.value.filename && React.createElement(
             'p',
             null,
-            this.state.value.filename
+            this.state.value.filename,
+            React.createElement(
+              'a',
+              { onClick: this.handleDelete.bind(this) },
+              ' ',
+              React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
+              ' '
+            )
           ),
-          oldFile && imageFile && React.createElement('img', { src: '/img/100x100,sc/' + this.state.value, style: img }),
+          oldFile && imageFile && React.createElement(
+            'div',
+            { 'class': 'position-relative d-inline-block mx-2' },
+            React.createElement('img', { src: '/img/100x100,sc/' + this.state.value, style: img }),
+            React.createElement(
+              'a',
+              { onClick: this.handleDelete.bind(this), className: 'position-absolute deleted' },
+              ' ',
+              React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
+              ' '
+            )
+          ),
           oldFile && !imageFile && React.createElement(
             'p',
             null,
@@ -282,6 +311,13 @@ var FileInput = (function (_React$Component) {
               'a',
               { href: '/private_media/' + this.state.value, target: '_blank' },
               this.state.value,
+              ' '
+            ),
+            React.createElement(
+              'a',
+              { onClick: this.handleDelete.bind(this) },
+              ' ',
+              React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: 'times-circle', className: 'fa-fw' }),
               ' '
             )
           )

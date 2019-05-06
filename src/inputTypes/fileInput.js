@@ -211,16 +211,25 @@ class FileInput extends React.Component {
         {!this.state.multiple && (          
           <React.Fragment>
           {this.state.value && this.state.value.preview && (
-            <img src={this.state.value.preview} style={img} />
+            <div className="position-relative d-inline-block mx-2">
+              <img src={this.state.value.preview} style={img} />
+              <a onClick={this.handleDelete.bind(this)} className="position-absolute deleted"> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a>
+            </div>
           )}
           {this.state.value && this.state.value.filename && (
-            <p>{this.state.value.filename}</p>
+            <p>{this.state.value.filename}<a onClick={this.handleDelete.bind(this)}> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a></p>
           )}
           {oldFile && imageFile && (
-            <img src={`/img/100x100,sc/${this.state.value}`} style={img} />
+            <div class="position-relative d-inline-block mx-2">
+              <img src={`/img/100x100,sc/${this.state.value}`} style={img} />
+              <a onClick={this.handleDelete.bind(this)} className="position-absolute deleted"> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a>
+            </div>
           )}
           {oldFile && !imageFile && (
-            <p><a href={`/private_media/${this.state.value}`} target="_blank">{this.state.value} </a></p>
+            <p>
+              <a href={`/private_media/${this.state.value}`} target="_blank">{this.state.value} </a>
+              <a onClick={this.handleDelete.bind(this)}> <FontAwesomeIcon icon="times-circle" className="fa-fw" /> </a>
+            </p>
           )} 
           </React.Fragment>
         )}
