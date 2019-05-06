@@ -8,6 +8,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _fortawesomeReactFontawesome = require('@fortawesome/react-fontawesome');
+
 var React = require('react');
 
 var cloneArray = require('../lib/cloneArray');
@@ -43,6 +45,12 @@ var CheckboxOptionsInput = (function (_React$Component) {
       }, this.props.onChange.bind(null, currentValue));
     }
   }, {
+    key: 'displayChange',
+    value: function displayChange(event, questionId) {
+      document.getElementById(questionId).classList.remove('d-none');
+      document.getElementById('icon-' + questionId).classList.add('d-none');
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this = this;
@@ -51,6 +59,7 @@ var CheckboxOptionsInput = (function (_React$Component) {
         'ul',
         { className: this.props.classes.checkboxList, id: this.props.name },
         this.props.options.map(function (opt, index) {
+          var labelAlign = opt.icons && _this.state.value.indexOf(opt.value) > -1 ? 'd-inline' : '';
           return React.createElement(
             'li',
             { key: opt.value,
@@ -67,10 +76,25 @@ var CheckboxOptionsInput = (function (_React$Component) {
               onBlur: _this.props.onBlur.bind(null, _this.state.value) }),
             React.createElement(
               'label',
-              { className: _this.props.classes.checkboxLabel,
+              { className: ' ' + _this.props.classes.checkboxLabel + ' ' + labelAlign,
                 id: _this.props.labelId + index, 'for': _this.props.labelId + index },
               opt.text
-            )
+            ),
+            opt.icons && _this.state.value.indexOf(opt.value) > -1 && opt.icons.map(function (icons, ind) {
+              return React.createElement(
+                React.Fragment,
+                null,
+                !_this.props.questionAnswers[icons.questionId] && React.createElement(
+                  'a',
+                  { href: 'javascript:void(0);', className: 'blackc no-u', onClick: function (event) {
+                      return _this.displayChange(event, icons.questionId);
+                    }, id: 'icon-' + icons.questionId },
+                  ' ',
+                  React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: icons.icon, className: 'fa-fw text-24' }),
+                  ' '
+                )
+              );
+            })
           );
         })
       );
