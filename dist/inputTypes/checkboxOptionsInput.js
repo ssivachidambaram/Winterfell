@@ -47,7 +47,7 @@ var CheckboxOptionsInput = (function (_React$Component) {
   }, {
     key: 'displayChange',
     value: function displayChange(event, questionId) {
-      document.getElementById(questionId).classList.remove('d-none');
+      document.getElementById('out-' + questionId).classList.remove('d-none');
       document.getElementById('icon-' + questionId).classList.add('d-none');
     }
   }, {
@@ -61,40 +61,73 @@ var CheckboxOptionsInput = (function (_React$Component) {
         this.props.options.map(function (opt, index) {
           var labelAlign = opt.icons && _this.state.value.indexOf(opt.value) > -1 ? 'd-inline' : '';
           return React.createElement(
-            'li',
-            { key: opt.value,
-              className: _this.props.classes.checkboxListItem },
-            React.createElement('input', { type: 'checkbox',
-              name: _this.props.name,
-              'aria-labelledby': _this.props.labelId,
-              value: opt.value,
-              checked: _this.state.value.indexOf(opt.value) > -1,
-              className: _this.props.classes.checkbox,
-              id: _this.props.labelId + index,
-              required: _this.props.required ? 'required' : undefined,
-              onChange: _this.handleChange.bind(_this, opt.value),
-              onBlur: _this.props.onBlur.bind(null, _this.state.value) }),
-            React.createElement(
-              'label',
-              { className: ' ' + _this.props.classes.checkboxLabel + ' ' + labelAlign,
-                id: _this.props.labelId + index, 'for': _this.props.labelId + index },
-              opt.text
-            ),
-            opt.icons && _this.state.value.indexOf(opt.value) > -1 && opt.icons.map(function (icons, ind) {
-              return React.createElement(
-                React.Fragment,
-                null,
-                !_this.props.questionAnswers[icons.questionId] && React.createElement(
-                  'a',
-                  { href: 'javascript:void(0);', className: 'blackc no-u', onClick: function (event) {
-                      return _this.displayChange(event, icons.questionId);
-                    }, id: 'icon-' + icons.questionId },
-                  ' ',
-                  React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: icons.icon, className: 'fa-fw text-24' }),
-                  ' '
+            React.Fragment,
+            null,
+            opt.icons && React.createElement(
+              'li',
+              { key: opt.value,
+                className: _this.props.classes.checkboxListItem },
+              React.createElement(
+                'div',
+                { className: 'float-left width-label' },
+                React.createElement('input', { type: 'checkbox',
+                  name: _this.props.name,
+                  'aria-labelledby': _this.props.labelId,
+                  value: opt.value,
+                  checked: _this.state.value.indexOf(opt.value) > -1,
+                  className: _this.props.classes.checkbox,
+                  id: _this.props.labelId + index,
+                  required: _this.props.required ? 'required' : undefined,
+                  onChange: _this.handleChange.bind(_this, opt.value),
+                  onBlur: _this.props.onBlur.bind(null, _this.state.value) }),
+                React.createElement(
+                  'label',
+                  { className: ' ' + _this.props.classes.checkboxLabel + ' ',
+                    id: _this.props.labelId + index, 'for': _this.props.labelId + index },
+                  opt.text
                 )
-              );
-            })
+              ),
+              React.createElement(
+                'div',
+                { className: 'float-right' },
+                opt.icons && _this.state.value.indexOf(opt.value) > -1 && opt.icons.map(function (icons, ind) {
+                  return React.createElement(
+                    React.Fragment,
+                    null,
+                    !_this.props.questionAnswers[icons.questionId] && React.createElement(
+                      'a',
+                      { href: 'javascript:void(0);', className: 'blackc no-u', onClick: function (event) {
+                          return _this.displayChange(event, icons.questionId);
+                        }, id: 'icon-' + icons.questionId },
+                      ' ',
+                      React.createElement(_fortawesomeReactFontawesome.FontAwesomeIcon, { icon: icons.icon, className: 'fa-fw text-24' }),
+                      ' '
+                    )
+                  );
+                })
+              )
+            ),
+            !opt.icons && React.createElement(
+              'li',
+              { key: opt.value,
+                className: _this.props.classes.checkboxListItem },
+              React.createElement('input', { type: 'checkbox',
+                name: _this.props.name,
+                'aria-labelledby': _this.props.labelId,
+                value: opt.value,
+                checked: _this.state.value.indexOf(opt.value) > -1,
+                className: _this.props.classes.checkbox,
+                id: _this.props.labelId + index,
+                required: _this.props.required ? 'required' : undefined,
+                onChange: _this.handleChange.bind(_this, opt.value),
+                onBlur: _this.props.onBlur.bind(null, _this.state.value) }),
+              React.createElement(
+                'label',
+                { className: ' ' + _this.props.classes.checkboxLabel,
+                  id: _this.props.labelId + index, 'for': _this.props.labelId + index },
+                opt.text
+              )
+            )
           );
         })
       );

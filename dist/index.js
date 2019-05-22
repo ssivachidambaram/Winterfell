@@ -18,7 +18,7 @@ var _ = require('lodash').noConflict();
 
 var QuestionPanel = require('./questionPanel');
 
-_fortawesomeFontawesomeSvgCore.library.add(_fortawesomeFreeSolidSvgIcons.faPaperclip, _fortawesomeFreeSolidSvgIcons.faTimesCircle, _fortawesomeFreeSolidSvgIcons.faComment, _fortawesomeFreeSolidSvgIcons.faPlus, _fortawesomeFreeSolidSvgIcons.faMinus);
+_fortawesomeFontawesomeSvgCore.library.add(_fortawesomeFreeSolidSvgIcons.faPaperclip, _fortawesomeFreeSolidSvgIcons.faTimesCircle, _fortawesomeFreeSolidSvgIcons.faComment, _fortawesomeFreeSolidSvgIcons.faPlus, _fortawesomeFreeSolidSvgIcons.faMinus, _fortawesomeFreeSolidSvgIcons.faChevronDown, _fortawesomeFreeSolidSvgIcons.faChevronUp);
 
 var Winterfell = (function (_React$Component) {
   _inherits(Winterfell, _React$Component);

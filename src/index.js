@@ -10,6 +10,8 @@ import {
   faComment,
   faPlus,
   faMinus,
+  faChevronDown,
+  faChevronUp,  
 } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faPaperclip,
@@ -17,6 +19,8 @@ library.add(
   faComment,
   faPlus,
   faMinus,
+  faChevronDown,
+  faChevronUp,
 );
 
 class Winterfell extends React.Component {

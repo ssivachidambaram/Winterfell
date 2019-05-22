@@ -30,7 +30,7 @@ class CheckboxOptionsInput extends React.Component {
   }
 
   displayChange(event, questionId) {
-    document.getElementById(questionId).classList.remove('d-none');
+    document.getElementById('out-'+questionId).classList.remove('d-none');
     document.getElementById('icon-'+questionId).classList.add('d-none');
   } 
 
@@ -40,33 +40,63 @@ class CheckboxOptionsInput extends React.Component {
         {this.props.options.map((opt,index) => {
           var labelAlign = (opt.icons && this.state.value.indexOf(opt.value) > -1) ? 'd-inline' : '';
           return (
-          <li key={opt.value}
-              className={this.props.classes.checkboxListItem}>
-              <input type="checkbox"
-                     name={this.props.name}
-                     aria-labelledby={this.props.labelId}
-                     value={opt.value}
-                     checked={this.state.value.indexOf(opt.value) > -1}
-                     className={this.props.classes.checkbox}
-                     id={this.props.labelId+index}
-                     required={this.props.required
-                                 ? 'required'
-                                 : undefined}
-                     onChange={this.handleChange.bind(this, opt.value)}
-                     onBlur={this.props.onBlur.bind(null, this.state.value)} />              
-            <label className={` ${this.props.classes.checkboxLabel} ${labelAlign}`}
-                   id={this.props.labelId+index} for={this.props.labelId+index}>
+            <React.Fragment>
+            {opt.icons && (
+              <li key={opt.value}
+                  className={this.props.classes.checkboxListItem}>
+                  <div className={`float-left width-label`}>
+                  <input type="checkbox"
+                        name={this.props.name}
+                        aria-labelledby={this.props.labelId}
+                        value={opt.value}
+                        checked={this.state.value.indexOf(opt.value) > -1}
+                        className={this.props.classes.checkbox}
+                        id={this.props.labelId+index}
+                        required={this.props.required
+                                    ? 'required'
+                                    : undefined}
+                        onChange={this.handleChange.bind(this, opt.value)}
+                        onBlur={this.props.onBlur.bind(null, this.state.value)} />              
+                <label className={` ${this.props.classes.checkboxLabel} `}
+                      id={this.props.labelId+index} for={this.props.labelId+index}>
 
-              {opt.text}
-            </label>
-            {opt.icons && this.state.value.indexOf(opt.value) > -1 && opt.icons.map((icons,ind) =>
+                  {opt.text}
+                </label>
+                </div>
+                <div className="float-right">
+                {opt.icons && this.state.value.indexOf(opt.value) > -1 && opt.icons.map((icons,ind) =>
               <React.Fragment>
                 {!this.props.questionAnswers[icons.questionId] && (
                   <a href="javascript:void(0);" className="blackc no-u" onClick={(event) => this.displayChange(event, icons.questionId )} id={`icon-${icons.questionId}`}> <FontAwesomeIcon icon={icons.icon} className="fa-fw text-24" /> </a>
                 )}
               </React.Fragment>            
             )}
-          </li>
+            </div>
+              </li>
+          )}
+            {!opt.icons && (
+              <li key={opt.value}
+                  className={this.props.classes.checkboxListItem}>
+                  <input type="checkbox"
+                        name={this.props.name}
+                        aria-labelledby={this.props.labelId}
+                        value={opt.value}
+                        checked={this.state.value.indexOf(opt.value) > -1}
+                        className={this.props.classes.checkbox}
+                        id={this.props.labelId+index}
+                        required={this.props.required
+                                    ? 'required'
+                                    : undefined}
+                        onChange={this.handleChange.bind(this, opt.value)}
+                        onBlur={this.props.onBlur.bind(null, this.state.value)} />              
+                <label className={` ${this.props.classes.checkboxLabel}`}
+                      id={this.props.labelId+index} for={this.props.labelId+index}>
+
+                  {opt.text}
+                </label>
+              </li>
+          )}
+          </React.Fragment>          
           )}
         )}
       </ul>

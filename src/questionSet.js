@@ -9,7 +9,7 @@ class QuestionSet extends React.Component {
     var mappingConditionalItems = [];
     var questions = this.props.questions.map(question => {
       if (typeof question.mappingConditions !== 'undefined') {
-        let isError = 0;
+        let isSatisfied = 0;
         let conditionCount = 0;
         let conditionSuccessCount = 0;
       question.mappingConditions.forEach(condition => {
@@ -32,11 +32,11 @@ class QuestionSet extends React.Component {
               }
             }
           });
+          if (conditionCount === conditionSuccessCount) {
+            isSatisfied++;
+          }
         });
-        if (conditionCount !== conditionSuccessCount) {
-          isError = 1;
-        }
-        if (!isError) {
+        if (isSatisfied) {
           mappingConditionalItems.push(
             <Question key={question.questionId}
                       questionSetId={this.props.id}
