@@ -261,7 +261,9 @@ var Winterfell = (function (_React$Component) {
       var currentPanel = _.find(this.state.schema.questionPanels, function (panel) {
         return panel.panelId == _this3.state.currentPanel.panelId;
       });
-
+      var class_name = '';
+      class_name = this.state.schema.classes.questionPanels !== undefined ? this.state.schema.classes.questionPanels : '';
+      class_name = currentPanel.questionPanelClass !== undefined ? class_name + ' ' + currentPanel.questionPanelClass : '';
       return React.createElement(
         'form',
         { method: this.props.method,
@@ -273,7 +275,7 @@ var Winterfell = (function (_React$Component) {
           className: this.state.schema.classes.form },
         React.createElement(
           'div',
-          { className: this.state.schema.classes.questionPanels + currentPanel.questionPanelClass },
+          { className: class_name },
           React.createElement(QuestionPanel, { schema: this.state.schema,
             classes: this.state.schema.classes,
             panelId: currentPanel.panelId,

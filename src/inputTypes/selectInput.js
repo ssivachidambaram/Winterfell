@@ -1,4 +1,5 @@
 var React = require('react');
+var _     = require('lodash').noConflict();
 
 class SelectInput extends React.Component {
 
@@ -17,8 +18,14 @@ class SelectInput extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (_.isEqual(this.props.conditionalAnswers, nextProps.conditionalAnswers) === false) {
+      this.setState({ value: '' }, this.props.onChange.bind(null, ''));
+    }
+    if (_.isEqual(this.props.mappingConditionalAnswers, nextProps.mappingConditionalAnswers) === false) {
+      this.setState({ value: '' }, this.props.onChange.bind(null, ''));
+    }
     if (this.props.value !== nextProps.value) {
-      this.setState({ value: nextProps.value });
+      this.setState({ value: nextProps.value }, this.props.onChange.bind(null, nextProps.value));
     }
   }
 

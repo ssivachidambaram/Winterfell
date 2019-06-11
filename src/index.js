@@ -259,14 +259,16 @@ class Winterfell extends React.Component {
   render() {
     var currentPanel = _.find(this.state.schema.questionPanels,
                           panel => panel.panelId == this.state.currentPanel.panelId);
-
+    var class_name = '';
+    class_name = (this.state.schema.classes.questionPanels !== undefined) ? this.state.schema.classes.questionPanels : '';
+    class_name = (currentPanel.questionPanelClass !== undefined) ? class_name + ' ' +currentPanel.questionPanelClass : '';
     return (
       <form method={this.props.method}
             encType={this.props.encType}
             action={this.state.action}
             ref={ref => this.formComponent = ref}
             className={this.state.schema.classes.form}>
-        <div className={this.state.schema.classes.questionPanels + currentPanel.questionPanelClass}>
+        <div className={class_name}>
           <QuestionPanel schema={this.state.schema}
                          classes={this.state.schema.classes}
                          panelId={currentPanel.panelId}

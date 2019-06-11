@@ -10,12 +10,12 @@ class QuestionSet extends React.Component {
     var questions = this.props.questions.map(question => {
       if (typeof question.mappingConditions !== 'undefined') {
         let isSatisfied = 0;
-        let conditionCount = 0;
-        let conditionSuccessCount = 0;
-      question.mappingConditions.forEach(condition => {
-            Object.keys(condition).forEach(questionId => {
-            if (this.props.questionAnswers[questionId] !== undefined) {
-              conditionCount += 1;
+        question.mappingConditions.forEach(condition => {
+          let conditionCount = 0;
+          let conditionSuccessCount = 0;
+          Object.keys(condition).forEach(questionId => {
+            conditionCount += 1;
+            if (this.props.questionAnswers[questionId] !== undefined) {              
               if (
                 Array.isArray(condition[questionId]) &&
                 condition[questionId].indexOf(

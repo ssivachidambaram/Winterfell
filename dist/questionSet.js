@@ -32,12 +32,12 @@ var QuestionSet = (function (_React$Component) {
         if (typeof question.mappingConditions !== 'undefined') {
           var _ret = (function () {
             var isSatisfied = 0;
-            var conditionCount = 0;
-            var conditionSuccessCount = 0;
             question.mappingConditions.forEach(function (condition) {
+              var conditionCount = 0;
+              var conditionSuccessCount = 0;
               Object.keys(condition).forEach(function (questionId) {
+                conditionCount += 1;
                 if (_this.props.questionAnswers[questionId] !== undefined) {
-                  conditionCount += 1;
                   if (Array.isArray(condition[questionId]) && condition[questionId].indexOf(_this.props.questionAnswers[questionId]) > -1) {
                     conditionSuccessCount += 1;
                   } else if (!Array.isArray(condition[questionId]) && condition[questionId] === _this.props.questionAnswers[questionId]) {

@@ -12,7 +12,7 @@ class HiddenInput extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.value !== nextProps.value) {
-      this.setState({ value: nextProps.value });
+      this.setState({ value: nextProps.value }, this.props.onChange.bind(null, nextProps.value));
     }
   }
 
