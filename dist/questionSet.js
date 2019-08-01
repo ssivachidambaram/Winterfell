@@ -38,7 +38,9 @@ var QuestionSet = (function (_React$Component) {
               Object.keys(condition).forEach(function (questionId) {
                 conditionCount += 1;
                 if (_this.props.questionAnswers[questionId] !== undefined) {
-                  if (Array.isArray(condition[questionId]) && condition[questionId].indexOf(_this.props.questionAnswers[questionId]) > -1) {
+                  if (Array.isArray(condition[questionId]) && Array.isArray(_this.props.questionAnswers[questionId]) && _.intersection(condition[questionId], _this.props.questionAnswers[questionId]).length > 0) {
+                    conditionSuccessCount += 1;
+                  } else if (Array.isArray(condition[questionId]) && condition[questionId].indexOf(_this.props.questionAnswers[questionId]) > -1) {
                     conditionSuccessCount += 1;
                   } else if (!Array.isArray(condition[questionId]) && condition[questionId] === _this.props.questionAnswers[questionId]) {
                     conditionSuccessCount += 1;

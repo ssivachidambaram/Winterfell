@@ -50,27 +50,30 @@ var SelectInput = (function (_React$Component) {
       var _this = this;
 
       var options = this.props.options.map(function (opt) {
-        var isError = 0;
+        var isSatisfied = 1;
         if (opt.mappingConditions !== undefined) {
-          var conditionCount = 0;
-          var conditionSuccessCount = 0;
+          isSatisfied = 0;
           opt.mappingConditions.forEach(function (condition) {
+            var conditionCount = 0;
+            var conditionSuccessCount = 0;
             Object.keys(condition).forEach(function (questionId) {
+              conditionCount += 1;
               if (_this.props.mappingConditionalAnswers[questionId] !== undefined) {
-                conditionCount += 1;
-                if (Array.isArray(condition[questionId]) && condition[questionId].indexOf(_this.props.mappingConditionalAnswers[questionId]) > -1) {
+                if (Array.isArray(condition[questionId]) && Array.isArray(_this.props.mappingConditionalAnswers[questionId]) && _.intersection(condition[questionId], _this.props.mappingConditionalAnswers[questionId]).length > 0) {
+                  conditionSuccessCount += 1;
+                } else if (Array.isArray(condition[questionId]) && condition[questionId].indexOf(_this.props.mappingConditionalAnswers[questionId]) > -1) {
                   conditionSuccessCount += 1;
                 } else if (!Array.isArray(condition[questionId]) && condition[questionId] === _this.props.mappingConditionalAnswers[questionId]) {
                   conditionSuccessCount += 1;
                 }
               }
             });
+            if (conditionCount === conditionSuccessCount) {
+              isSatisfied++;
+            }
           });
-          if (conditionCount !== conditionSuccessCount) {
-            isError = 1;
-          }
         }
-        if (!isError) {
+        if (isSatisfied) {
           if (typeof opt.conditions !== 'undefined' && opt.conditions.length > 0) {
             var _ret = (function () {
               var c = 0;

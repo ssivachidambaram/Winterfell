@@ -15,8 +15,13 @@ class QuestionSet extends React.Component {
           let conditionSuccessCount = 0;
           Object.keys(condition).forEach(questionId => {
             conditionCount += 1;
-            if (this.props.questionAnswers[questionId] !== undefined) {              
+            if (this.props.questionAnswers[questionId] !== undefined) { 
               if (
+                Array.isArray(condition[questionId]) && Array.isArray(this.props.questionAnswers[questionId]) &&
+                _.intersection(condition[questionId], this.props.questionAnswers[questionId]).length > 0
+              ) {
+                conditionSuccessCount += 1;
+              }else if (
                 Array.isArray(condition[questionId]) &&
                 condition[questionId].indexOf(
                   this.props.questionAnswers[questionId]

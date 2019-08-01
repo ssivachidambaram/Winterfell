@@ -31,15 +31,21 @@ class SelectInput extends React.Component {
 
   render() {
     var options = this.props.options.map(opt => {
-      let isError = 0;
-      if (opt.mappingConditions !== undefined) {
-        let conditionCount = 0;
-        let conditionSuccessCount = 0;
+      let isSatisfied = 1;
+      if (opt.mappingConditions !== undefined) {        
+        isSatisfied = 0;
         opt.mappingConditions.forEach(condition => {
-          Object.keys(condition).forEach(questionId => {
-            if (this.props.mappingConditionalAnswers[questionId] !== undefined) {
+          let conditionCount = 0;
+          let conditionSuccessCount = 0;
+            Object.keys(condition).forEach(questionId => {
               conditionCount += 1;
+            if (this.props.mappingConditionalAnswers[questionId] !== undefined) {
               if (
+                Array.isArray(condition[questionId]) && Array.isArray(this.props.mappingConditionalAnswers[questionId]) &&
+                _.intersection(condition[questionId], this.props.mappingConditionalAnswers[questionId]).length > 0
+              ) {
+                conditionSuccessCount += 1;
+              }else if (
                 Array.isArray(condition[questionId]) &&
                 condition[questionId].indexOf(
                   this.props.mappingConditionalAnswers[questionId]
@@ -55,12 +61,12 @@ class SelectInput extends React.Component {
               }
             }
           });
+          if (conditionCount === conditionSuccessCount) {
+            isSatisfied++;
+          }
         });
-        if (conditionCount !== conditionSuccessCount) {
-          isError = 1;
-        }
       }
-      if (!isError) {
+      if (isSatisfied) {
         if (typeof opt.conditions !== 'undefined' && opt.conditions.length > 0) {
           let c = 0;
           opt.conditions
