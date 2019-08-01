@@ -67,6 +67,7 @@ var Winterfell = (function (_React$Component) {
   _createClass(Winterfell, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
+      this.schema = nextProps.schema;
       var schema = this.updateSchema();
       this.setState({
         action: nextProps.action,

@@ -71,6 +71,7 @@ class Winterfell extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.schema = nextProps.schema;
     var schema = this.updateSchema();
     this.setState({
       action          : nextProps.action,
