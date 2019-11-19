@@ -30,7 +30,10 @@ class DateInput extends React.Component {
       <DatePicker
         selected={this.state.value}
         onChange={this.handleChange.bind(this)}
-        className={this.props.classes.input}        
+        className={this.props.classes.input}  
+        showMonthDropdown
+        showYearDropdown
+        dateFormat="yyyy/MM/dd"
       />
       </div>
     );

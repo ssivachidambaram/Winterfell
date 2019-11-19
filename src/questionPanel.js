@@ -111,11 +111,12 @@ class QuestionPanel extends React.Component {
           this.props.questionAnswers)) {
           return;
         }
-
-        questionValidationErrors.push({
-          type: validation.type,
-          message: ErrorMessages.getErrorMessage(validation)
-        });
+        if(questionValidationErrors.length === 0){
+          questionValidationErrors.push({
+            type: validation.type,
+            message: ErrorMessages.getErrorMessage(validation)
+          });
+        }
       });
 
     var validationErrors = _.chain(this.state.validationErrors)
@@ -129,6 +130,8 @@ class QuestionPanel extends React.Component {
 
   handleMainButtonClick() {
     var action = this.props.action.default;
+    console.log(action);
+    console.log(this.props.questionAnswers);
     var conditions = this.props.action.conditions || [];
 
     /*
@@ -153,11 +156,17 @@ class QuestionPanel extends React.Component {
      */
     if (Object.keys(invalidQuestions).length > 0) {
       var validationErrors = _.mapValues(invalidQuestions, validations => {
+        var i = 0;
         return validations.map(validation => {
-          return {
-            type: validation.type,
-            message: ErrorMessages.getErrorMessage(validation)
-          };
+          i++;
+          if(i > 1){ 
+            return false; // skip
+          }else {
+            return {
+              type: validation.type,
+              message: ErrorMessages.getErrorMessage(validation)
+            };
+          }
         })
       });
 

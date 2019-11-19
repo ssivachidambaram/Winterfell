@@ -54,7 +54,10 @@ var DateInput = (function (_React$Component) {
         React.createElement(_reactDatepicker2['default'], {
           selected: this.state.value,
           onChange: this.handleChange.bind(this),
-          className: this.props.classes.input
+          className: this.props.classes.input,
+          showMonthDropdown: true,
+          showYearDropdown: true,
+          dateFormat: 'yyyy/MM/dd'
         })
       );
     }

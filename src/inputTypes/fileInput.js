@@ -33,7 +33,8 @@ class FileInput extends React.Component {
     }
     this.setState(
       {
-        value: temp
+        value: temp,
+        progress: 0
       },
       this.props.onChange.bind(null, temp, 'delete:'+index)
     );

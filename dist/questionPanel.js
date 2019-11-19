@@ -159,11 +159,12 @@ var QuestionPanel = (function (_React$Component2) {
         if (Validation.validateAnswer(questionAnswer, validation, _this2.props.questionAnswers)) {
           return;
         }
-
-        questionValidationErrors.push({
-          type: validation.type,
-          message: ErrorMessages.getErrorMessage(validation)
-        });
+        if (questionValidationErrors.length === 0) {
+          questionValidationErrors.push({
+            type: validation.type,
+            message: ErrorMessages.getErrorMessage(validation)
+          });
+        }
       });
 
       var validationErrors = _.chain(this.state.validationErrors).set(questionId, questionValidationErrors).value();
@@ -180,6 +181,8 @@ var QuestionPanel = (function (_React$Component2) {
       var _this3 = this;
 
       var action = this.props.action['default'];
+      console.log(action);
+      console.log(this.props.questionAnswers);
       var conditions = this.props.action.conditions || [];
 
       /*
@@ -204,11 +207,17 @@ var QuestionPanel = (function (_React$Component2) {
        */
       if (Object.keys(invalidQuestions).length > 0) {
         var validationErrors = _.mapValues(invalidQuestions, function (validations) {
+          var i = 0;
           return validations.map(function (validation) {
-            return {
-              type: validation.type,
-              message: ErrorMessages.getErrorMessage(validation)
-            };
+            i++;
+            if (i > 1) {
+              return false; // skip
+            } else {
+                return {
+                  type: validation.type,
+                  message: ErrorMessages.getErrorMessage(validation)
+                };
+              }
           });
         });
 

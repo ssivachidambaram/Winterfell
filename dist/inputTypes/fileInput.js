@@ -55,7 +55,8 @@ var FileInput = (function (_React$Component) {
         temp.splice(index, 1);
       }
       this.setState({
-        value: temp
+        value: temp,
+        progress: 0
       }, this.props.onChange.bind(null, temp, 'delete:' + index));
     }
   }, {

@@ -10,9 +10,10 @@ class TextInput extends React.Component {
   }
 
   handleChange(e) {
+    var value = e.target.value.trim();
     this.setState({
       value : e.target.value
-    }, this.props.onChange.bind(null, e.target.value));
+    }, this.props.onChange.bind(null, value));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,7 +35,7 @@ class TextInput extends React.Component {
                          ? 'required'
                          : undefined}
              onChange={this.handleChange.bind(this)}
-             onBlur={this.props.onBlur.bind(null, this.state.value)}
+             onBlur={this.props.onBlur.bind(null, this.state.value.trim())}
              onKeyDown={this.props.onKeyDown} />
     );
   }

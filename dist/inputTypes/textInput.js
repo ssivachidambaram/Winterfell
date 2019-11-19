@@ -25,9 +25,10 @@ var TextInput = (function (_React$Component) {
   _createClass(TextInput, [{
     key: 'handleChange',
     value: function handleChange(e) {
+      var value = e.target.value.trim();
       this.setState({
         value: e.target.value
-      }, this.props.onChange.bind(null, e.target.value));
+      }, this.props.onChange.bind(null, value));
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -48,7 +49,7 @@ var TextInput = (function (_React$Component) {
         value: this.state.value,
         required: this.props.required ? 'required' : undefined,
         onChange: this.handleChange.bind(this),
-        onBlur: this.props.onBlur.bind(null, this.state.value),
+        onBlur: this.props.onBlur.bind(null, this.state.value.trim()),
         onKeyDown: this.props.onKeyDown });
     }
   }]);

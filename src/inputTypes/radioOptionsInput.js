@@ -4,7 +4,7 @@ class RadioOptionsInput extends React.Component {
 
   constructor(props) {
     super(props);
-
+    
     this.state = {
       value : this.props.value
     };
@@ -14,6 +14,10 @@ class RadioOptionsInput extends React.Component {
     this.setState({
       value : value
     }, this.props.onChange.bind(null, value));
+  }
+
+  componentDidMount() {
+      this.handleChange(this.state.value);
   }
 
   componentWillReceiveProps(nextProps) {
