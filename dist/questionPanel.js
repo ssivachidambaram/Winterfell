@@ -181,8 +181,6 @@ var QuestionPanel = (function (_React$Component2) {
       var _this3 = this;
 
       var action = this.props.action['default'];
-      console.log(action);
-      console.log(this.props.questionAnswers);
       var conditions = this.props.action.conditions || [];
 
       /*

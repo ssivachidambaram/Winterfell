@@ -130,8 +130,6 @@ class QuestionPanel extends React.Component {
 
   handleMainButtonClick() {
     var action = this.props.action.default;
-    console.log(action);
-    console.log(this.props.questionAnswers);
     var conditions = this.props.action.conditions || [];
 
     /*

@@ -14,6 +14,10 @@ var _reactDatepicker = require("react-datepicker");
 
 var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
 
+var _dateFnsParseISO = require('date-fns/parseISO');
+
+var _dateFnsParseISO2 = _interopRequireDefault(_dateFnsParseISO);
+
 require('react-datepicker/dist/react-datepicker.css');
 
 var React = require('react');
@@ -52,7 +56,7 @@ var DateInput = (function (_React$Component) {
         'div',
         { id: this.props.name },
         React.createElement(_reactDatepicker2['default'], {
-          selected: this.state.value,
+          selected: (0, _dateFnsParseISO2['default'])(this.state.value),
           onChange: this.handleChange.bind(this),
           className: this.props.classes.input,
           showMonthDropdown: true,

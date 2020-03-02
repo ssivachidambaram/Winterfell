@@ -1,5 +1,6 @@
 var React = require('react');
 import DatePicker from "react-datepicker";
+import parseISO from 'date-fns/parseISO';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class DateInput extends React.Component {
@@ -28,7 +29,7 @@ class DateInput extends React.Component {
     return (
       <div id={this.props.name}>
       <DatePicker
-        selected={this.state.value}
+        selected={parseISO(this.state.value)}
         onChange={this.handleChange.bind(this)}
         className={this.props.classes.input}  
         showMonthDropdown
