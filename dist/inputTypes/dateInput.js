@@ -52,16 +52,17 @@ var DateInput = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var format = this.props.text && this.props.text !== "" ? this.props.text : "yyyy/MM/dd";
       return React.createElement(
         'div',
         { id: this.props.name },
         React.createElement(_reactDatepicker2['default'], {
-          selected: (0, _dateFnsParseISO2['default'])(this.state.value),
+          selected: this.state.value,
           onChange: this.handleChange.bind(this),
           className: this.props.classes.input,
           showMonthDropdown: true,
           showYearDropdown: true,
-          dateFormat: 'yyyy/MM/dd'
+          dateFormat: format
         })
       );
     }

@@ -163,6 +163,10 @@ var Question = (function (_React$Component) {
 
       var disconfirmation = this.state.displayConfirmationNeed ? 'd-none' : '';
 
+      function createMarkup(questionSetHtml) {
+        return { __html: questionSetHtml };
+      }
+
       return React.createElement(
         'div',
         { className: this.props.classes.question + ' ' + this.props.questionContainerClass + ' ' + validationInputErrors + ' ' + disconfirmation + ' ', id: 'out-' + this.props.questionId },
@@ -173,11 +177,7 @@ var Question = (function (_React$Component) {
             htmlFor: this.props.questionId },
           this.props.question,
           typeof this.props.renderRequiredAsterisk !== 'undefined' && this.props.input.required ? this.props.renderRequiredAsterisk() : undefined,
-          !!this.props.text ? React.createElement(
-            'small',
-            { className: this.props.classes.questionText },
-            this.props.text
-          ) : undefined
+          !!this.props.text ? React.createElement('small', { className: this.props.classes.questionText, dangerouslySetInnerHTML: createMarkup(this.props.text) }) : undefined
         ) : undefined,
         React.createElement(Input, _extends({ name: this.props.questionId,
           id: this.props.questionId,

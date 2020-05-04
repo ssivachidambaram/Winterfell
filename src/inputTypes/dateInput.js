@@ -26,16 +26,17 @@ class DateInput extends React.Component {
   }
 
   render() {
+    const format = (this.props.text && this.props.text !== "") ? this.props.text : "yyyy/MM/dd";
     return (
       <div id={this.props.name}>
-      <DatePicker
-        selected={parseISO(this.state.value)}
-        onChange={this.handleChange.bind(this)}
-        className={this.props.classes.input}  
-        showMonthDropdown
-        showYearDropdown
-        dateFormat="yyyy/MM/dd"
-      />
+        <DatePicker
+          selected={this.state.value}
+          onChange={this.handleChange.bind(this)}
+          className={this.props.classes.input}  
+          showMonthDropdown
+          showYearDropdown
+          dateFormat={format}
+        />
       </div>
     );
   }

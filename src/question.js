@@ -186,6 +186,10 @@ class Question extends React.Component {
     ) ? true : false;
 
     var disconfirmation = (this.state.displayConfirmationNeed) ? 'd-none' : '';
+
+    function createMarkup(questionSetHtml) {
+      return {__html: questionSetHtml};
+    } 
     
     return (
       <div className={`${this.props.classes.question} ${this.props.questionContainerClass} ${validationInputErrors} ${disconfirmation} `} id={`out-${this.props.questionId}`}>
@@ -201,8 +205,7 @@ class Question extends React.Component {
                    : undefined}
         {!!this.props.text
           ? (
-              <small className={this.props.classes.questionText}>
-                {this.props.text}
+              <small className={this.props.classes.questionText} dangerouslySetInnerHTML={createMarkup(this.props.text)}>
               </small>
             )
           : undefined}                   
