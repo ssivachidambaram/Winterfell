@@ -27,10 +27,14 @@ class DateInput extends React.Component {
 
   render() {
     const format = (this.props.text && this.props.text !== "") ? this.props.text : "yyyy/MM/dd";
+    let selectedDate = this.state.value;
+    if (Object.prototype.toString.call(this.state.value) === '[object String]') {
+      selectedDate = parseISO(this.state.value);
+    }
     return (
       <div id={this.props.name}>
         <DatePicker
-          selected={this.state.value}
+          selected={selectedDate}
           onChange={this.handleChange.bind(this)}
           className={this.props.classes.input}  
           showMonthDropdown
