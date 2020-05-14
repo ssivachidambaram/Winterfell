@@ -28,8 +28,8 @@ class DateInput extends React.Component {
   render() {
     const format = (this.props.text && this.props.text !== "") ? this.props.text : "yyyy/MM/dd";
     let selectedDate = this.state.value;
-    if (Object.prototype.toString.call(this.state.value) === '[object String]') {
-      selectedDate = parseISO(this.state.value);
+    if (selectedDate && Object.prototype.toString.call(selectedDate) === '[object String]') {
+      selectedDate = parseISO(selectedDate);
     }
     return (
       <div id={this.props.name}>

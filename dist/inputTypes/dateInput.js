@@ -54,8 +54,8 @@ var DateInput = (function (_React$Component) {
     value: function render() {
       var format = this.props.text && this.props.text !== "" ? this.props.text : "yyyy/MM/dd";
       var selectedDate = this.state.value;
-      if (Object.prototype.toString.call(this.state.value) === '[object String]') {
-        selectedDate = (0, _dateFnsParseISO2['default'])(this.state.value);
+      if (selectedDate && Object.prototype.toString.call(selectedDate) === '[object String]') {
+        selectedDate = (0, _dateFnsParseISO2['default'])(selectedDate);
       }
       return React.createElement(
         'div',
