@@ -23,11 +23,11 @@ var HtmlInput = (function (_React$Component) {
   }
 
   _createClass(HtmlInput, [{
-    key: 'handleChange',
-    value: function handleChange(e) {
-      this.setState({
-        value: e.target.value
-      }, this.props.onChange.bind(null, e.target.value));
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.text !== nextProps.text) {
+        this.setState({ text: nextProps.text }, this.props.onChange.bind(null, nextProps.text));
+      }
     }
   }, {
     key: 'createMarkup',

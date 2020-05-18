@@ -9,10 +9,10 @@ class HtmlInput extends React.Component {
     };
   }
 
-  handleChange(e) {
-    this.setState({
-      value : e.target.value
-    }, this.props.onChange.bind(null, e.target.value));
+  componentWillReceiveProps(nextProps) {
+    if (this.props.text !== nextProps.text) {
+      this.setState({ text: nextProps.text }, this.props.onChange.bind(null, nextProps.text));
+    }
   }
 
   createMarkup(panelHtml) {
@@ -22,11 +22,11 @@ class HtmlInput extends React.Component {
   render() {
     return (
       <React.Fragment>
-      {typeof this.state.text !== 'undefined'
-      ? (
-        <div dangerouslySetInnerHTML={this.createMarkup(this.state.text)} />
-      )
-      : ""}
+        {typeof this.state.text !== 'undefined'
+        ? (
+          <div dangerouslySetInnerHTML={this.createMarkup(this.state.text)} />
+        )
+        : ""}
       </React.Fragment>
     );
   }
