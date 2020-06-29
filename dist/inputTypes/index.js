@@ -15,6 +15,7 @@ var inputTypes = {
   textareaInput: require('./textareaInput'),
   textInput: require('./textInput'),
   dateInput: require('./dateInput'),
+  recaptchaInput: require('./recaptchaInput'),
   htmlInput: require('./htmlInput')
 };
 
